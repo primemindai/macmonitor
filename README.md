@@ -37,13 +37,30 @@ It reads hardware sensors read only. It never writes to the hardware, never need
 Sensor names we have not proven carry a **best guess** tag. A reading that is missing shows
 "not available" or `--`, never a fake zero.
 
-## Build and install
+## Download
+
+1. Get `MacMonitor-<version>.zip` from the [latest release](https://github.com/primemindai/macmonitor/releases/latest).
+   It is for Apple Silicon Macs on macOS 15 or newer.
+2. Double-click the zip, then drag `MacMonitor.app` into your Applications folder.
+3. Open it. The first time, macOS says **"Apple could not verify MacMonitor"**. This is because the app is
+   not signed with a paid Apple Developer ID yet. Click **Done**, then pick one fix:
+   - **System Settings:** open **Privacy & Security**, scroll down to "MacMonitor was blocked", click
+     **Open Anyway**, and confirm with your password or Touch ID.
+   - **Terminal:** run this once, then open the app again.
+
+     ```bash
+     xattr -dr com.apple.quarantine /Applications/MacMonitor.app
+     ```
+
+You only do this once. Prefer to check the code first? Build it yourself (next section).
+
+## Build and install from source
 
 You need Apple's Command Line Tools (no Xcode needed). There are no third-party packages.
 
 ```bash
 xcode-select --install                     # skip if the Command Line Tools are already installed
-git clone <this repo's URL> MacMonitor
+git clone https://github.com/primemindai/macmonitor.git MacMonitor
 cd MacMonitor
 ```
 
@@ -63,6 +80,12 @@ This builds a release copy, wraps it in `MacMonitor.app`, signs it ad hoc, insta
 `~/Applications/MacMonitor.app` and opens it. The first launch asks once for notification permission
 and turns on "start at login".
 
+Make a release zip (what the Releases page ships; it does not install anything):
+
+```bash
+scripts/release.sh 1.0.0
+```
+
 Run the tests. Use the script: plain `swift test` on Command Line Tools cannot find the Testing framework, so it fails or runs zero tests.
 
 ```bash
@@ -71,7 +94,9 @@ scripts/test.sh
 
 ## Claude and Codex can read it too (MCP)
 
-The MCP server is a separate program inside the app:
+The MCP server is a separate program inside the app. The commands below use the path from a source build
+(`~/Applications`). If you downloaded the app into your Applications folder, use
+`/Applications/MacMonitor.app/Contents/MacOS/macmonitor-mcp` instead.
 
 ```
 ~/Applications/MacMonitor.app/Contents/MacOS/macmonitor-mcp
