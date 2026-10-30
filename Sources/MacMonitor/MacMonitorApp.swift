@@ -105,14 +105,26 @@ enum MacMonitorMain {
         let p = NSPopover()
         p.behavior = .transient
         p.delegate = self
-        p.contentViewController = NSHostingController(rootView:
+        let host = NSHostingController(rootView:
             MenuBarPopover(openWindow: { [weak self] in self?.popover?.performClose(nil); self?.showWindow() },
-                           quit: { NSApp.terminate(nil) })
+                           quit: { NSApp.terminate(nil) },
+                           maxHeight: popoverMaxHeight(under: b))
                 .environmentObject(model)
                 .themed())
+        // Size the popover from the SwiftUI content before it is placed. Without this NSPopover places a 320 pt
+        // window, Auto Layout then grows it upward to the content height, and the top slides under the menu bar.
+        host.sizingOptions = [.preferredContentSize]
+        p.contentViewController = host
         popover = p
         p.show(relativeTo: b.bounds, of: b, preferredEdge: .minY)
         p.contentViewController?.view.window?.makeKey()
+    }
+
+    /// Space between the bottom of the menu bar item and the bottom of the visible screen (above the Dock).
+    private func popoverMaxHeight(under b: NSStatusBarButton) -> CGFloat {
+        guard let w = b.window, let screen = w.screen ?? NSScreen.main else { return 600 }
+        let anchor = w.convertToScreen(b.convert(b.bounds, to: nil))
+        return CGFloat(PopoverFit.maxContentHeight(anchorMinY: anchor.minY, visibleMinY: screen.visibleFrame.minY))
     }
 
     func popoverDidClose(_ notification: Notification) {

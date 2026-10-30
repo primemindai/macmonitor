@@ -5,10 +5,30 @@ import MonitorCore
 struct MenuBarPopover: View {
     @EnvironmentObject private var model: AppModel
     @Environment(\.theme) private var theme
+    @Environment(\.renderMode) private var renderMode
     var openWindow: () -> Void
     var quit: () -> Void
+    /// Tallest the content may be: the space under the menu bar item on this screen (see PopoverFit).
+    var maxHeight: CGFloat = 10_000
+    @State private var contentHeight: CGFloat?
 
     var body: some View {
+        if renderMode {
+            content
+        } else {
+            // Taller than the space under the menu bar: cap the height and scroll, so the top is never cut off.
+            let fit = PopoverFit.height(content: Double(contentHeight ?? maxHeight), maxHeight: Double(maxHeight))
+            ScrollView(.vertical) {
+                content.onGeometryChange(for: CGFloat.self, of: { $0.size.height }) { contentHeight = $0 }
+            }
+            .scrollDisabled(!fit.scrolls)
+            .scrollIndicators(fit.scrolls ? .automatic : .never)
+            .frame(width: 380, height: CGFloat(fit.height))
+            .background(theme.bg)
+        }
+    }
+
+    @ViewBuilder private var content: some View {
         let s = model.latest
         let fan = s?.fans.compactMap(\.actualRPM).max()
         VStack(alignment: .leading, spacing: 12) {
