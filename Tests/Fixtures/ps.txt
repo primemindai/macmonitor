@@ -1,0 +1,690 @@
+    1   0.2  18128 /sbin/launchd
+  323   0.3  32288 /usr/libexec/logd
+  325   0.0  11168 /usr/libexec/UserEventAgent
+  327   4.2  10320 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+  328   0.0   8704 /System/Library/PrivateFrameworks/MediaRemote.framework/Support/mediaremoted
+  331   0.0   9088 /usr/sbin/systemstats
+  335   0.0  12064 /usr/libexec/configd
+  337   0.0   9344 /System/Library/CoreServices/powerd.bundle/powerd
+  338   0.0   2688 /usr/libexec/IOMFB_bics_daemon
+  342   0.0   3936 /usr/libexec/remoted
+  346   0.0   1856 /System/Library/PrivateFrameworks/CoreSpeech.framework/corespeechd_system
+  348   0.0   3072 /usr/libexec/watchdogd
+  352   2.9  31712 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mds
+  354   0.0   4080 /usr/libexec/kernelmanagerd
+  355   0.0   5056 /usr/libexec/diskarbitrationd
+  359   0.0   1376 /usr/sbin/syslogd
+  361   0.0   4224 /usr/libexec/thermalmonitord
+  362   0.1  11104 /System/Library/PrivateFrameworks/CoreDuetContext.framework/Resources/contextstored
+  363   0.0  15488 /usr/libexec/xprotectd
+  364   0.1  13904 /usr/libexec/opendirectoryd
+  365   0.0  12928 /System/Library/PrivateFrameworks/ApplePushService.framework/apsd
+  366   0.0  11728 /System/Library/CoreServices/launchservicesd
+  367   0.0   3952 /usr/libexec/timed
+  368   0.0   3728 /System/Library/PrivateFrameworks/MobileDevice.framework/Versions/A/Resources/usbmuxd
+  369   0.0   8400 /usr/sbin/securityd
+  371   0.0  22112 /usr/libexec/locationd
+  374   0.0   2112 autofsd
+  375   0.0  20736 /usr/libexec/dasd
+  376   0.0   3712 /usr/libexec/corerepaird
+  378   0.0   3312 /usr/sbin/distnoted
+  382   0.0   2944 /System/Library/CoreServices/logind
+  383   0.0   4464 /System/Library/PrivateFrameworks/GenerationalStorage.framework/Versions/A/Support/revisiond
+  384   0.0   1440 /usr/sbin/KernelEventAgent
+  388   0.0  21984 /usr/sbin/bluetoothd
+  389   0.1   4672 /usr/sbin/notifyd
+  391   0.0   9760 /usr/libexec/corebrightnessd
+  392   0.0   6800 /usr/libexec/AirPlayXPCHelper
+  393   0.0  11408 /System/Library/Frameworks/CoreMediaIO.framework/Versions/A/Resources/com.apple.cmio.registerassistantservice
+  396  45.4  87040 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer
+  397   0.0  17216 /System/Library/PrivateFrameworks/TCC.framework/Support/tccd
+  398   0.0   5920 /usr/sbin/cfprefsd
+  399   0.0  52048 /System/Library/CoreServices/loginwindow.app/Contents/MacOS/loginwindow
+  401   0.0   4656 /System/Library/CoreServices/coreservicesd
+  402   0.0  21024 /usr/libexec/runningboardd
+  406   0.0  12656 /usr/libexec/lsd
+  408   0.7  24608 /usr/sbin/coreaudiod
+  414   0.0  10960 /usr/libexec/nsurlsessiond
+  416   0.0  11584 /usr/libexec/nehelper
+  417   0.0  16816 /System/Library/PrivateFrameworks/CoreAnalytics.framework/Support/analyticsd
+  418   0.0   3664 /System/Library/Frameworks/CoreMediaIO.framework/Resources/VDC.plugin/Contents/Resources/VDCAssistant
+  420   0.0   4832 /usr/libexec/eligibilityd
+  423   0.0   2096 /usr/sbin/distnoted
+  433   0.0   3392 /usr/libexec/ApplicationFirewall/socketfilterfw
+  435   0.0   3824 /System/Library/Frameworks/Security.framework/Versions/A/XPCServices/com.apple.CodeSigningHelper.xpc/Contents/MacOS/com.apple.CodeSigningHelper
+  437   0.0   2448 /usr/sbin/distnoted
+  453   0.2  26176 /usr/libexec/syspolicyd
+  467   0.0  19248 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+  488   3.8  14176 /usr/sbin/mDNSResponder
+  500   1.2  10736 /usr/libexec/symptomsd
+  501   0.0   4640 /Applications/Cloudflare WARP.app/Contents/Resources/warp-updater
+  502   0.0   8176 /Library/Frameworks/OpenVPNConnect.framework/Versions/Current/usr/sbin/ovpnagent
+  505   0.0   6336 /Library/PrivilegedHelperTools/com.bitgapp.eqmac.helper/Contents/MacOS/com.bitgapp.eqmac.helper
+  506   0.0 105008 /Applications/Cloudflare WARP.app/Contents/Resources/CloudflareWARP
+  507   0.0   4608 /Library/Frameworks/OVPNHelper.framework/Versions/Current/usr/sbin/ovpnhelper
+  510   0.0   4944 /Library/PrivilegedHelperTools/com.docker.vmnetd
+  511   0.0  23312 /usr/libexec/airportd
+  512   0.0      0 /Library/SystemExtensions/85016E23-C920-4476-AB34-A9AC21D0992D/com.crowdstrike.falcon.Agent.systemextension/Contents/MacOS/com.crowdstrike.falcon.Agent
+  514   0.0  13360 /System/Library/Frameworks/Security.framework/Versions/A/XPCServices/authd.xpc/Contents/MacOS/authd
+  516   0.0   2112 /usr/sbin/distnoted
+  523   0.0   3792 /usr/sbin/mDNSResponderHelper
+  524   0.0   2096 /usr/sbin/cron
+  528   0.0   2096 /usr/sbin/distnoted
+  529   0.0   7216 /System/Library/CoreServices/TimeMachine/backupd
+  532   0.0   4064 /usr/libexec/aned
+  534   0.0   3680 /usr/libexec/com.apple.cmio.videodriverkithostextension.systemextension/Contents/MacOS/com.apple.cmio.videodriverkithostextension
+  536   0.0  11392 /usr/libexec/cameracaptured
+  537   0.0   5504 /System/Library/Frameworks/CoreMediaIO.framework/Versions/A/Resources/UVCAssistant.systemextension/Contents/MacOS/UVCAssistant
+  540   0.0   6304 /System/Library/CoreServices/appleeventsd
+  544   0.7 232208 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mds_stores
+  545   0.0   6608 Core Audio Driver (BlackHole16ch.driver)
+  549   0.0   6208 /usr/libexec/audiomxd
+  555   0.0   6608 Core Audio Driver (BlackHole2ch.driver)
+  556   0.0   2944 /usr/libexec/audioclocksyncd
+  557   0.0   2112 /usr/sbin/distnoted
+  559   0.0   7008 Core Audio Driver (LoomAudioDevice.driver)
+  561   0.0   1296 /System/Library/DriverExtensions/com.apple.DriverKit-IOUserDockChannelSerial.dext/com.apple.DriverKit-IOUserDockChannelSerial
+  563   0.0   8912 Core Audio Driver (MSTeamsAudioDevice.driver)
+  564   0.0  33856 /System/Library/DriverExtensions/com.apple.DriverKit-AppleBCMWLAN.dext/com.apple.DriverKit-AppleBCMWLAN
+  566   0.0   2272 /System/Library/DriverExtensions/com.apple.AppleUserHIDDrivers.dext/com.apple.AppleUserHIDDrivers
+  567   0.0   6400 Core Audio Driver (ParrotAudioPlugin.driver)
+  568   0.0   4496 /System/Library/CoreServices/Software Update.app/Contents/Resources/suhelperd
+  570   0.0   6560 Core Audio Driver (VoicemodAudioDevice.driver)
+  572   0.0  13440 /usr/libexec/modelmanagerd
+  578   2.5   7664 /System/Library/Audio/Plug-Ins/usbaudio.bundle/Contents/MacOS/usbaudiod
+  581   0.0   2112 /usr/sbin/distnoted
+  583   0.0      0 /Applications/Falcon.app/Contents/PlugIns/FileAnalysis.bundle/Contents/XPCServices/FileAnalysisService.xpc/Contents/MacOS/FileAnalysisService
+  599   0.0  20416 /usr/libexec/searchpartyd
+  601   0.0   2096 /usr/sbin/distnoted
+  605   0.0  10672 Core Audio Driver (eqMac.driver)
+  621   0.0   2352 /usr/sbin/distnoted
+  630   0.0   2112 /usr/sbin/distnoted
+  646   0.0   4848 /usr/sbin/distnoted
+  647   0.0   5552 /usr/sbin/cfprefsd
+  650   0.0  15920 /usr/libexec/secd
+  654   0.0  10544 /usr/libexec/UserEventAgent
+  660   0.0  10352 /usr/sbin/universalaccessd
+  662   0.0  24160 /System/Library/CoreServices/WindowManager.app/Contents/MacOS/WindowManager
+  666   0.0   9200 /usr/libexec/pboard
+  667   0.0  22288 /System/Library/Frameworks/Accounts.framework/Versions/A/Support/accountsd
+  668   0.0   9072 /usr/libexec/containermanagerd
+  671   0.1  14992 /System/Library/PrivateFrameworks/BiomeStreams.framework/Support/BiomeAgent
+  672   0.0  17952 /usr/libexec/rapportd
+  674   0.0  11664 /usr/libexec/lsd
+  677   0.0  13488 /usr/libexec/nsurlsessiond
+  678   0.0  26000 /usr/sbin/usernoted
+  681   0.0   5488 /System/Library/CoreServices/lockoutagent
+  684   0.0  17920 /System/Library/PrivateFrameworks/TCC.framework/Support/tccd
+  688   0.0  27568 /System/Library/PrivateFrameworks/IDS.framework/identityservicesd.app/Contents/MacOS/identityservicesd
+  691   0.0  11776 /System/Library/PrivateFrameworks/ScreenTimeCore.framework/Versions/A/ScreenTimeAgent
+  692   0.0   2128 /usr/sbin/distnoted
+  703   0.4 1175696 /Applications/Brave Browser.app/Contents/MacOS/Brave Browser
+  716   0.0  41680 /usr/libexec/sharingd
+  718   0.0  26432 /System/Library/PrivateFrameworks/IMCore.framework/imagent.app/Contents/MacOS/imagent
+  720   0.0  56048 /System/Library/CoreServices/ControlCenter.app/Contents/MacOS/ControlCenter
+  721   0.0   3136 /System/Library/Frameworks/CryptoTokenKit.framework/ctkd
+  725   0.0  15088 /System/Library/CoreServices/SystemUIServer.app/Contents/MacOS/SystemUIServer
+  727   0.0  20288 /System/Library/PrivateFrameworks/ChronoCore.framework/Support/chronod
+  729   0.0  13312 /System/Library/CoreServices/sharedfilelistd
+  735   0.0  20208 /System/Library/CoreServices/AccessibilityUIServer.app/Contents/MacOS/AccessibilityUIServer
+  740   0.0  11072 /usr/libexec/ContinuityCaptureAgent
+  745   0.0  17968 /System/Library/CoreServices/WallpaperAgent.app/Contents/MacOS/WallpaperAgent
+  746   0.0  16592 /usr/libexec/gamepolicyd
+  750   0.0   7264 /usr/sbin/filecoordinationd
+  753   0.0   9600 /usr/libexec/nearbyd
+  754   0.0  16368 /System/Library/PrivateFrameworks/FamilyCircle.framework/Versions/A/Resources/familycircled
+  758   0.0  23008 /System/Library/PrivateFrameworks/AuthKit.framework/Versions/A/Support/akd
+  762   0.0   2032 automountd
+  764   0.0   6416 /System/Library/PrivateFrameworks/AMPDevices.framework/Versions/A/Support/AMPDeviceDiscoveryAgent
+  767   0.0  11056 /System/Library/CoreServices/audioaccessoryd
+  772   0.0  93728 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/corespotlightd
+  779   0.0   9488 /System/Library/PrivateFrameworks/ViewBridge.framework/Versions/A/XPCServices/ViewBridgeAuxiliary.xpc/Contents/MacOS/ViewBridgeAuxiliary
+  782   0.0  16672 /System/Library/CoreServices/UIKitSystem.app/Contents/MacOS/UIKitSystem
+  790   0.0  13792 /System/Library/PrivateFrameworks/UserActivity.framework/Agents/useractivityd
+  791   0.0   2320 /System/Library/PrivateFrameworks/MediaRemote.framework/Support/mediaremoteagent
+  792  15.8  30576 /usr/libexec/avconferenced
+  798   0.0  23104 /System/Library/PrivateFrameworks/CoreSpeech.framework/corespeechd
+  801   0.0  10720 /System/Library/ExtensionKit/Extensions/WallpaperAerialsExtension.appex/Contents/MacOS/WallpaperAerialsExtension
+  817   0.0   1504 /usr/libexec/rosetta/oahd
+  821   0.0  12944 /System/Library/CoreServices/UniversalControl.app/Contents/MacOS/UniversalControl
+  852   0.0  23744 /System/Library/CoreServices/WiFiAgent.app/Contents/MacOS/WiFiAgent
+  872   0.0  93104 /System/Library/CoreServices/Spotlight.app/Contents/MacOS/Spotlight
+  914   0.0  21744 /System/Library/PrivateFrameworks/TextInputUIMacHelper.framework/Versions/A/XPCServices/CursorUIViewService.xpc/Contents/MacOS/CursorUIViewService
+  916   0.0   1488 /System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/CVMServer
+  921   0.0   4848 /System/Library/Frameworks/InputMethodKit.framework/Resources/imklaunchagent
+  928   0.0  13632 /System/Library/Input Methods/PressAndHold.app/Contents/PlugIns/PAH_Extension.appex/Contents/MacOS/PAH_Extension
+  942   0.0   7440 /System/Library/CoreServices/SubmitDiagInfo
+  977   0.0   2112 /usr/sbin/distnoted
+  983   0.0   1312 /System/Library/DriverExtensions/IOUserBluetoothSerialDriver.dext/IOUserBluetoothSerialDriver
+  990   0.0   4576 /System/Library/Image Capture/Support/icdd
+  991   0.0  34080 /opt/homebrew/Cellar/python@3.10/3.10.17/Frameworks/Python.framework/Versions/3.10/Resources/Python.app/Contents/MacOS/Python
+  996   0.0  10448 /System/Library/CoreServices/AirPlayUIAgent.app/Contents/MacOS/AirPlayUIAgent
+  999   0.0   9792 /System/Library/CoreServices/diagnostics_agent
+ 1000   0.0  14112 /System/Library/CoreServices/TextInputMenuAgent.app/Contents/MacOS/TextInputMenuAgent
+ 1001   0.0  19264 Contents/Library/LaunchAgents/com.microsoft.teams2.agent
+ 1003   0.0   2704 /System/Library/Frameworks/CryptoTokenKit.framework/ctkahp.bundle/Contents/MacOS/ctkahp
+ 1012   0.0   4336 /System/Library/Frameworks/CryptoTokenKit.framework/ctkahp.bundle/Contents/MacOS/ctkahp
+ 1022   0.0   6096 /System/Library/PrivateFrameworks/FamilyControls.framework/Resources/parentalcontrolsd
+ 1033   0.0   2112 /usr/sbin/distnoted
+ 1061   0.0  12336 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdbulkimport
+ 1074   0.0 201456 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+ 1602   0.0   2096 /usr/sbin/distnoted
+ 1611   0.0  13472 /usr/libexec/networkserviceproxy
+ 1723   0.0   9696 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+ 1903   0.0   2112 /usr/sbin/distnoted
+ 1988   0.0   2640 /System/Library/PrivateFrameworks/CoreFP.framework/Versions/A/fairplayd
+ 2070   0.0  14960 /System/Library/PrivateFrameworks/FileProvider.framework/Support/fileproviderd
+ 2103   0.0  18144 /System/Library/PrivateFrameworks/UniversalAccess.framework/Versions/A/Resources/universalAccessAuthWarn.app/Contents/MacOS/universalAccessAuthWarn
+ 2107   0.0  24256 /System/Library/CoreServices/System Events.app/Contents/MacOS/System Events
+ 2112   0.0  10640 /System/Library/CoreServices/FolderActionsDispatcher.app/Contents/MacOS/FolderActionsDispatcher
+ 2134   0.0   2128 /usr/sbin/distnoted
+ 2180   0.0   3312 /usr/sbin/systemstats
+ 2401   0.0  12784 /System/Library/PrivateFrameworks/People.framework/peopled
+ 2623   0.0   2096 /usr/sbin/distnoted
+ 2738   0.0   2368 /System/Library/CoreServices/CrashReporterSupportHelper
+ 2745   0.0     16 /System/Applications/Phone.app/Contents/MacOS/Phone
+ 3041   0.0  20896 /System/Library/PrivateFrameworks/SafariPlatformSupport.framework/Versions/A/XPCServices/com.apple.SafariPlatformSupport.Helper.xpc/Contents/MacOS/com.apple.SafariPlatformSupport.Helper
+ 3059   0.0  72240 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer)
+ 3066   0.0  78944 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer)
+ 3366   0.0 130608 /Users/user/Applications/ExampleApp.app/Contents/MacOS/ExampleApp
+ 3770   0.0 123232 node
+ 3966   0.0  15904 /System/Library/PrivateFrameworks/SkyLight.framework//Versions/A/Resources/AquaAppearanceHelper.app/Contents/MacOS/AquaAppearanceHelper
+ 4082   0.0  95728 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+ 4088   0.0  70352 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+ 4090   0.0  66016 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+ 4091   0.0   3072 /usr/sbin/appleh16camerad
+ 4120   0.0  91856 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+ 4222   0.0 121888 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+ 4247   0.0 204928 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+ 4293   0.0 118672 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+ 4305   0.0  89920 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+ 4318   0.0  90064 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+ 4459   0.0 119104 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/155.0.8059.85/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+ 4474   0.0 106320 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+ 4496   0.0   7344 /System/Library/PrivateFrameworks/IMDPersistence.framework/IMAutomaticHistoryDeletionAgent.app/Contents/MacOS/IMAutomaticHistoryDeletionAgent
+ 4604   0.0   6688 /System/Library/PrivateFrameworks/SocialLayer.framework/sociallayerd.app/Contents/MacOS/sociallayerd
+ 4618   0.0  18272 /usr/libexec/textcomposerd
+ 4702   0.0   2096 /usr/sbin/distnoted
+ 4738   0.0   7520 /System/Library/PrivateFrameworks/ModelCatalogRuntime.framework/Versions/A/modelcatalogd
+ 4948   0.0   9104 /System/Library/PrivateFrameworks/GeoServices.framework/Versions/A/XPCServices/com.apple.geod.xpc/Contents/MacOS/com.apple.geod
+ 5222   0.0  12576 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+ 5223   0.0  12512 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+ 5247   0.0  18224 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+ 5297   0.0  12608 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+ 5538   0.0  26512 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+ 5708   0.0  12608 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+ 5730   0.0  54624 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+ 5731   0.0 125920 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+ 5798   0.1  46960 /opt/homebrew/Cellar/python@3.13/3.13.3/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+ 5849   0.0  23360 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+ 5851   0.0  12704 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+ 5936   0.0  12704 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+ 5977   0.0  12672 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+ 6085   0.0  18288 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+ 6139   0.0   3760 /System/Library/PrivateFrameworks/FamilyNotification.framework/familynotificationd
+ 6148   0.0  18576 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+ 6161   0.0  36784 cloudflared
+ 6177   0.0  12704 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+ 6178   0.0  18208 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+ 6179   0.0  12672 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+ 6195   0.0  23440 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+ 6272   0.0  36960 cloudflared
+ 6288   0.8  24048 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+ 6321   0.0  28336 /opt/homebrew/Cellar/python@3.13/3.13.3/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+ 6504   0.0  11504 /usr/libexec/mlhostd
+ 6524   0.0 209488 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+ 6984   0.0  23616 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+ 7049  33.5 485584 node
+ 7060   0.0  21920 /Users/user/Projects/example-web/node_modules/.pnpm/@esbuild+darwin-arm64@0.25.12/node_modules/@esbuild/darwin-arm64/bin/esbuild
+ 7073  64.3 489024 /Users/user/.nvm/versions/node/v24.19.0/bin/node
+ 7388   0.0  95200 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/155.0.8059.85/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+ 7557   0.0   1200 sleep
+ 7678   0.0  18784 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+ 7697   0.0   9200 /System/Library/PrivateFrameworks/TextToSpeechVoiceBankingSupport.framework/Support/voicebankingd
+ 7756   0.0   1184 sleep
+ 7972   0.0  19568 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+ 8010   0.0  18624 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+ 8085   0.0   1200 sleep
+ 8105   0.0   2992 /bin/zsh
+ 8107   0.0  26624 /opt/homebrew/Cellar/python@3.13/3.13.3/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+ 8108   0.0   1888 /bin/zsh
+ 8109   0.0   1904 /bin/zsh
+ 8110   0.0   3664 ugrep
+ 8111   0.0   1296 sed
+ 8112   0.0   3840 ugrep
+ 8113   0.0   1216 head
+ 8114   0.0   2976 /bin/zsh
+ 8115   0.0   1696 ps
+ 8943   0.0  20848 /System/iOSSupport/System/Library/PrivateFrameworks/HomeEnergyDaemon.framework/Support/homeenergyd
+ 9300   0.0   1520 /usr/bin/ssh-agent
+ 9381   0.0   3792 /usr/sbin/netbiosd
+ 9416   0.0   7040 /usr/libexec/keyboardservicesd
+10001   0.0   3168 /System/Library/CoreServices/Setup Assistant.app/Contents/Resources/mbuseragent
+11844   0.0 100112 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+12464   0.0      0 /Applications/Falcon.app/Contents/PlugIns/StaticAnalysis.bundle/Contents/XPCServices/FXPredictService.xpc/Contents/MacOS/FXPredictService
+13849   0.0   5456 /System/Library/PrivateFrameworks/CloudTelemetry.framework/Versions/A/XPCServices/CloudTelemetryService.xpc/Contents/MacOS/CloudTelemetryService
+13850   0.0  11712 /System/Library/PrivateFrameworks/XprotectFramework.framework/Versions/A/XPCServices/XProtectBridgeService.xpc/Contents/MacOS/XProtectBridgeService
+14275   0.0   9216 /System/Library/Frameworks/ExtensionFoundation.framework/Versions/A/XPCServices/extensionkitservice.xpc/Contents/MacOS/extensionkitservice
+14443   0.0   2160 /bin/zsh
+14724   0.0   6784 /System/Library/PrivateFrameworks/CoreADI.framework/adid
+15016   0.0  19824 /usr/libexec/searchpartyuseragent
+15352   0.0  17664 /System/Library/CoreServices/Siri.app/Contents/MacOS/Siri
+15537   0.0  16624 /usr/libexec/proactived
+16859   0.0  59088 /System/Library/PrivateFrameworks/CoreSuggestions.framework/Versions/A/Support/suggestd
+16893   0.0  19616 /usr/libexec/knowledge-agent
+16955   0.0  25776 /usr/libexec/coreduetd
+17080   0.0  15024 /usr/libexec/transparencyd
+17660   0.0  17280 /System/Applications/Home.app/Contents/PlugIns/HomeWidget.appex/Contents/MacOS/HomeWidget
+17661   0.0  15536 /System/Applications/Home.app/Contents/PlugIns/HomeEnergyWidgetsExtension.appex/Contents/MacOS/HomeEnergyWidgetsExtension
+17870   0.0  67184 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper
+18369   0.0 121168 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/155.0.8059.85/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+18563   0.0   7040 /System/Library/ExtensionKit/Extensions/TGOnDeviceInferenceProviderService.appex/Contents/MacOS/TGOnDeviceInferenceProviderService
+18660   0.0  11072 /System/Library/PrivateFrameworks/BiomeStreams.framework/Support/biomed
+18751   0.0 123312 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/155.0.8059.85/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+19070   0.0 165072 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+19298   0.0  18576 /usr/libexec/remindd
+19569   0.0 142848 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+19582   0.0     16 /Applications/Sequel Ace.app/Contents/MacOS/Sequel Ace
+19593   0.0  70464 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+19622   0.0  89280 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+19649   0.0  67424 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+19650   0.0  53600 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+21132   0.0     16 /System/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal
+21429   0.0  16224 /System/Library/CoreServices/talagentd
+23898   0.0   2928 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdwrite
+23989   0.0  54288 /Applications/Amphetamine.app/Contents/MacOS/Amphetamine
+24240   0.0  47840 /System/Library/Frameworks/AppKit.framework/Versions/C/XPCServices/com.apple.appkit.xpc.openAndSavePanelService.xpc/Contents/MacOS/com.apple.appkit.xpc.openAndSavePanelService
+25005   0.0   8608 /System/Library/CoreServices/ControlCenter.app/Contents/PlugIns/DisplayControls.appex/Contents/MacOS/DisplayControls
+25407   0.0  15904 /System/Library/Frameworks/QuickLookUI.framework/Versions/A/XPCServices/QuickLookUIService.xpc/Contents/MacOS/QuickLookUIService
+25556   0.0 102064 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+25705   0.0 129312 /System/Applications/Messages.app/Contents/MacOS/Messages
+27227   0.3 124176 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/155.0.8059.85/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+27822   0.0  19312 /usr/libexec/routined
+27856   0.0  36976 /System/Library/PrivateFrameworks/XprotectFramework.framework/Versions/A/XPCServices/XprotectService.xpc/Contents/MacOS/XprotectService
+28269   0.0   3696 /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/HIServices.framework/Versions/A/XPCServices/com.apple.hiservices-xpcservice.xpc/Contents/MacOS/com.apple.hiservices-xpcservice
+28688   0.0  10560 /System/Library/Frameworks/Contacts.framework/Support/contactsd
+28717   0.0   7952 /System/Library/PrivateFrameworks/iCloudDriveCore.framework/Versions/A/Support/bird
+28720   0.0  19536 /System/Library/PrivateFrameworks/VoiceShortcuts.framework/Versions/A/Support/siriactionsd
+28759   0.0  17120 /System/Library/PrivateFrameworks/WorkflowKit.framework/XPCServices/ShortcutsViewService.xpc/Contents/MacOS/ShortcutsViewService
+30061   0.0   5072 /System/Library/PrivateFrameworks/FileProviderDaemon.framework/XPCServices/FPCKService.xpc/Contents/MacOS/FPCKService
+31997   0.0   9664 /usr/libexec/findmydeviced
+32029   0.0   3520 /usr/libexec/containermanagerd_system
+32085   0.0   6608 /usr/libexec/findmydevice-user-agent
+32854   0.0   2112 /bin/zsh
+33136   0.0  25264 node
+33566   0.0   4976 /usr/local/vanta/metalauncher
+33602   0.0  14288 /usr/local/vanta/launcher
+33604   0.0   8960 /usr/local/vanta/osqueryd
+33618   0.0  31040 /usr/local/vanta/osqueryd
+33619   0.0  12400 /usr/local/vanta/osquery-vanta.ext
+34030   0.0  87888 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer)
+34391   0.0     16 /private/var/folders/32/lhv__hp90gl8jfmfyyz4nlkr0000gn/X/418F6B94-1DE4-528A-BF28-4A318115DA94/d/Wrapper/Tapo.app/Tapo
+34410   0.0  21600 /System/Library/PrivateFrameworks/HearingCore.framework/heard
+34592   0.0  19712 /System/Library/CoreServices/UserNotificationCenter.app/Contents/MacOS/UserNotificationCenter
+34857   0.0  17088 /System/Library/PrivateFrameworks/SyncedDefaults.framework/Support/syncdefaultsd
+34858   0.0   4512 /usr/libexec/usermanagerd
+34861   0.0  25552 /System/Library/PrivateFrameworks/CloudKitDaemon.framework/Support/cloudd
+35143   0.0  15328 /usr/libexec/linkd
+35301   0.0  18384 /System/Library/PrivateFrameworks/CoreFollowUp.framework/Versions/A/Resources/FollowUpUI.app/Contents/MacOS/FollowUpUI
+35794   0.0  16992 /System/Library/Frameworks/AuthenticationServices.framework/Versions/A/XPCServices/com.apple.AuthenticationServices.Helper.xpc/Contents/MacOS/com.apple.AuthenticationServices.Helper
+36188   0.0   9152 /System/Library/PrivateFrameworks/GeoServices.framework/Versions/A/XPCServices/com.apple.geod.xpc/Contents/MacOS/com.apple.geod
+36380   0.0   5616 /System/Library/PrivateFrameworks/CloudTelemetry.framework/Versions/A/XPCServices/CloudTelemetryService.xpc/Contents/MacOS/CloudTelemetryService
+36460   0.0   9072 /System/Library/PrivateFrameworks/Synapse.framework/Support/contentlinkingd
+36499   0.0  16704 /System/Library/PrivateFrameworks/IntelligencePlatformCompute.framework/Versions/A/XPCServices/IntelligencePlatformComputeService.xpc/Contents/MacOS/IntelligencePlatformComputeService
+36576   0.0   7968 /System/Library/PrivateFrameworks/SafariSafeBrowsing.framework/com.apple.Safari.SafeBrowsing.Service
+36697   0.0   4256 /System/Library/Frameworks/ManagedSettings.framework/Versions/A/ManagedSettingsAgent
+37043   0.0  10992 /usr/libexec/swcd
+37422   0.0  73120 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+37423   0.0 218304 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+37552   0.0  81344 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+38225   0.0   4320 /System/Library/CoreServices/diagnosticservicesd
+38460   0.0 198384 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+39274   0.0 132352 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/155.0.8059.85/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+39844   0.0  10928 /System/Library/PrivateFrameworks/PassKitCore.framework/passd
+40292   0.0  69264 /Applications/Sublime Text.app/Contents/MacOS/sublime_text
+40295   0.0   7216 /Applications/Sublime Text.app/Contents/MacOS/crash_handler
+40307   0.0  20992 /System/Library/PrivateFrameworks/SafariPlatformSupport.framework/Versions/A/XPCServices/com.apple.SafariPlatformSupport.Helper.xpc/Contents/MacOS/com.apple.SafariPlatformSupport.Helper
+40308   0.0   8480 /Applications/Sublime Text.app/Contents/MacOS/plugin_host-3.3
+40309   0.0   8880 /Applications/Sublime Text.app/Contents/MacOS/plugin_host-3.8
+40451   0.0     16 /Applications/Fathom.app/Contents/MacOS/Fathom
+40665   0.0   9840 /opt/homebrew/Cellar/python@3.10/3.10.17/Frameworks/Python.framework/Versions/3.10/Resources/Python.app/Contents/MacOS/Python
+40669   0.0   6976 /opt/homebrew/Cellar/python@3.10/3.10.17/Frameworks/Python.framework/Versions/3.10/Resources/Python.app/Contents/MacOS/Python
+40670   0.1  17168 /opt/homebrew/Cellar/python@3.10/3.10.17/Frameworks/Python.framework/Versions/3.10/Resources/Python.app/Contents/MacOS/Python
+40770   0.0 114624 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+41536   0.0  86944 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+41537   0.0   4912 /Users/user/.codex/plugins/cache/openai-bundled/chrome/latest/extension-host/macos/arm64/ChatGPT for Chrome
+42486   0.0   2480 /usr/libexec/sysmond
+43561   0.0   5008 /usr/libexec/inputanalyticsd
+43562   0.0  13056 /usr/libexec/naturallanguaged
+43909   0.0   3952 /System/Library/PrivateFrameworks/KerberosHelper/Helpers/DiskUnmountWatcher
+44171   0.0  26848 /System/Library/PrivateFrameworks/AssistantServices.framework/Versions/A/Support/assistantd
+44633   0.0  90256 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+44863   0.0   8880 /opt/homebrew/Cellar/python@3.13/3.13.3/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+44874   0.0   6272 /opt/homebrew/Cellar/python@3.13/3.13.3/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+45429   0.0 248432 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+45519   0.0 121616 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+45965   0.0  79104 /opt/homebrew/Cellar/python@3.13/3.13.3/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+46096   0.0 203504 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+46121   0.0  94608 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+46377   0.0   9024 /usr/libexec/neagent
+46528   0.0  17728 /System/Library/PrivateFrameworks/AppPredictionFoundation.framework/Versions/A/XPCServices/AppPredictionIntentsHelperService.xpc/Contents/MacOS/AppPredictionIntentsHelperService
+46718   0.0 130032 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+46811   0.0   7072 /System/Library/PrivateFrameworks/SessionCore.framework/Support/liveactivitiesd
+47276   0.0  11968 /System/Library/PrivateFrameworks/CoreParsec.framework/parsecd
+47292   0.0   8096 /System/Library/PrivateFrameworks/ContinuousDialogManagerService.framework/assistant_cdmd
+47329   0.0  22160 /usr/libexec/PerfPowerServices
+47582   0.0  10208 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/managedcorespotlightd
+49354   0.0   4896 /System/Library/CoreServices/RemoteManagement/ScreensharingAgent.bundle/Contents/Support/SSPasteboardHelper.bundle/Contents/MacOS/SSPasteboardHelper
+49505   0.0  37616 /System/Library/Frameworks/AppKit.framework/Versions/C/XPCServices/com.apple.appkit.xpc.openAndSavePanelService.xpc/Contents/MacOS/com.apple.appkit.xpc.openAndSavePanelService
+50555   0.0  26528 /System/Library/PrivateFrameworks/HomeKitDaemon.framework/Support/homed
+50694   0.0  51088 /System/Library/CoreServices/Dock.app/Contents/XPCServices/DockHelper.xpc/Contents/MacOS/DockHelper
+50711   0.0  12368 /System/Library/CoreServices/ReportCrash
+50832   0.0   1776 /System/Library/PrivateFrameworks/CoreSymbolication.framework/coresymbolicationd
+51294   0.0  74896 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+51638   0.0  34240 node
+53504   0.0   5824 /System/Library/PrivateFrameworks/IntelligencePlatformCore.framework/Versions/A/intelligenceplatformd
+54094   0.0  82368 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+54634   0.0   9152 /usr/libexec/audioanalyticsd
+54841   0.0  14928 /System/Library/Frameworks/Metal.framework/Versions/A/XPCServices/MTLCompilerService.xpc/Contents/MacOS/MTLCompilerService
+54881   0.0 126832 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+54929   0.0  52480 /System/Library/Services/AppleSpell.service/Contents/MacOS/AppleSpell
+54987   0.0   5488 /usr/libexec/SidecarRelay
+55030   0.0   2976 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdsync
+55107   0.0 117344 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/155.0.8059.85/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+55717   0.0 155008 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+56232   0.0 114096 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/155.0.8059.85/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+56677   0.0  17312 /System/Library/PrivateFrameworks/DoNotDisturbServer.framework/Support/donotdisturbd
+56691   0.0   9648 /System/Library/PrivateFrameworks/Categories.framework/Versions/A/XPCServices/CategoriesService.xpc/Contents/MacOS/CategoriesService
+56722   0.0 261600 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+56796   0.0   8208 /System/Library/Frameworks/ExtensionFoundation.framework/Versions/A/XPCServices/extensionkitservice.xpc/Contents/MacOS/extensionkitservice
+56797   0.0   5040 /System/Library/ExtensionKit/Extensions/ImageThumbnailExtension.appex/Contents/MacOS/ImageThumbnailExtension
+57115   0.0     16 /System/Applications/Preview.app/Contents/MacOS/Preview
+57326   0.0 160240 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/155.0.8059.85/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+58318   0.0 716960 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/155.0.8059.85/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+58417   0.0   2288 /usr/libexec/taskgated
+58852   0.0 126160 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+59052   0.0   6240 /usr/sbin/WirelessRadioManagerd
+59543   0.0  23136 /System/Library/PrivateFrameworks/SafariPlatformSupport.framework/Versions/A/XPCServices/com.apple.SafariPlatformSupport.Helper.xpc/Contents/MacOS/com.apple.SafariPlatformSupport.Helper
+59824   0.0   3792 /System/Library/PrivateFrameworks/CacheDelete.framework/deleted_helper
+59988   0.0  13488 /usr/libexec/triald_system
+59989   0.0   5152 /System/Library/PrivateFrameworks/PackageKit.framework/Resources/installd
+59990   0.0   4032 /System/Library/PrivateFrameworks/GeoServices.framework/geodMachServiceBridge
+59991   0.0   6944 /usr/libexec/AssetCache/AssetCache
+59993   0.0   9232 /System/Library/PrivateFrameworks/CloudKitDaemon.framework/Support/cloudd
+59994   0.0   5216 /System/Library/PrivateFrameworks/PackageKit.framework/Resources/system_installd
+60087   0.0   2928 /System/Library/PrivateFrameworks/AssetCacheServicesExtensions.framework/XPCServices/AssetCacheTetheratorService.xpc/Contents/MacOS/AssetCacheTetheratorService
+60709   0.0  90128 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer)
+61058   0.0   2128 /usr/sbin/distnoted
+61361   0.0  15680 /System/Library/PrivateFrameworks/CallHistory.framework/Support/CallHistorySyncHelper
+61375   0.0   8816 /System/Library/PrivateFrameworks/CallHistory.framework/Support/CallHistoryPluginHelper
+63278   0.0 138592 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+63589   0.0     16 /System/Applications/System Settings.app/Contents/MacOS/System Settings
+63798   0.0  79360 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+63812   0.0  91632 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+64201   0.0  13072 /System/Library/CoreServices/PowerChime.app/Contents/MacOS/PowerChime
+64234   0.0    672 /Applications/Claude.app/Contents/Helpers/disclaimer
+64240   3.9 435280 /Users/user/Library/Application Support/Claude/claude-code/2.1.309/5af865b9901c/claude.app/Contents/MacOS/claude
+64546   0.0   2176 /System/Library/CoreServices/liquiddetectiond.app/liquiddetectiond
+64791   0.0  36144 /Applications/KeepingYouAwake.app/Contents/MacOS/KeepingYouAwake
+64820   0.0  12768 /System/Library/PrivateFrameworks/MobileDevice.framework/Resources/MobileDeviceUpdater.app/Contents/MacOS/MobileDeviceUpdater
+65343   0.0   7472 /System/Library/PrivateFrameworks/EcosystemAnalytics.framework/Support/ecosystemanalyticsd
+65362   0.0   7984 /System/Library/PrivateFrameworks/Ecosystem.framework/Support/ecosystemd
+65381   0.0 142416 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/155.0.8059.85/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+65810   0.0 154048 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/155.0.8059.85/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+65833   0.0  69952 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/155.0.8059.85/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+65849   0.0 113712 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+65850   0.0 110976 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+65863   0.0 100144 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+65885   0.0 104096 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+66530   2.5 372272 /Applications/Claude.app/Contents/MacOS/Claude
+66547   0.0   7968 /Applications/Claude.app/Contents/Frameworks/Electron Framework.framework/Helpers/chrome_crashpad_handler
+66548  16.7  97312 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper
+66550   0.0  69472 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper
+66554   0.0  81328 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer)
+66558  11.1 1068192 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer)
+66567   0.0    688 /Applications/Claude.app/Contents/Helpers/disclaimer
+66571   0.7 344320 /Users/user/Library/Application Support/Claude/claude-code/2.1.309/5af865b9901c/claude.app/Contents/MacOS/claude
+66652   0.0    512 /usr/libexec/dirhelper
+66788   0.0  16816 /usr/libexec/pkd
+66895   0.0 120944 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper
+66908   0.0  63952 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper
+66950   0.0  23328 /usr/libexec/mobileassetd
+66971   0.0  60240 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Plugin).app/Contents/MacOS/Claude Helper (Plugin)
+66973   0.0  64528 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Plugin).app/Contents/MacOS/Claude Helper (Plugin)
+66974   0.0  64608 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Plugin).app/Contents/MacOS/Claude Helper (Plugin)
+66975   0.0    640 /Applications/Claude.app/Contents/Helpers/disclaimer
+66977   0.0  12320 /opt/homebrew/Cellar/python@3.10/3.10.17/Frameworks/Python.framework/Versions/3.10/Resources/Python.app/Contents/MacOS/Python
+67013   0.0  54448 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper
+67085   0.0  14624 /usr/libexec/triald
+67163   0.0 263792 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/155.0.8059.85/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+67438   0.0    640 /Applications/Claude.app/Contents/Helpers/disclaimer
+67439   0.0  17488 /Users/user/.local/bin/uv
+67440   1.2  42560 /Users/user/Library/Application Support/Claude/Claude Extensions/ant.dir.gh.cursortouch.macos-mcp/.venv/bin/python
+67613   0.0   7328 /usr/libexec/rtcreportingd
+67843   0.0   9104 /System/Library/PrivateFrameworks/CascadeSets.framework/Versions/A/XPCServices/SetStoreUpdateService.xpc/Contents/MacOS/SetStoreUpdateService
+68783   0.0  18336 /System/Library/Frameworks/Translation.framework/translationd
+68881   0.0   1168 /bin/zsh
+68885   0.0   1024 /bin/bash
+68905  27.5 453280 /opt/homebrew/Cellar/python@3.13/3.13.3/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+69611   0.0  73968 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+70338   0.0  23712 /System/Library/PrivateFrameworks/SoftwareUpdate.framework/Resources/SoftwareUpdateNotificationManager.app/Contents/MacOS/SoftwareUpdateNotificationManager
+70350   0.0  37328 /System/Library/PrivateFrameworks/UIFoundation.framework/Versions/A/XPCServices/nsattributedstringagent.xpc/Contents/MacOS/nsattributedstringagent
+70503   0.0  20608 /System/Library/ExtensionKit/Extensions/DynamicBackgroundPosterExtension.appex/Contents/MacOS/DynamicBackgroundPosterExtension
+70770   0.0   3376 /System/Library/PrivateFrameworks/SystemAdministration.framework/XPCServices/writeconfig.xpc/Contents/MacOS/writeconfig
+71207   0.0  62752 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper
+71405   0.0   2192 /bin/zsh
+72233   0.0  24112 /System/Library/PrivateFrameworks/CoreDuetContext.framework/Resources/ContextStoreAgent
+72519   0.0 174256 /Applications/OpenVPN Connect/OpenVPN Connect.app/Contents/MacOS/OpenVPN Connect
+72522   0.0  25248 /Applications/OpenVPN Connect/OpenVPN Connect.app/Contents/Frameworks/OpenVPN Connect Helper (GPU).app/Contents/MacOS/OpenVPN Connect Helper (GPU)
+72523   0.0  21424 /Applications/OpenVPN Connect/OpenVPN Connect.app/Contents/Frameworks/OpenVPN Connect Helper.app/Contents/MacOS/OpenVPN Connect Helper
+72524   0.0 159888 /Applications/OpenVPN Connect/OpenVPN Connect.app/Contents/Frameworks/OpenVPN Connect Helper (Renderer).app/Contents/MacOS/OpenVPN Connect Helper (Renderer)
+74443   0.0   6352 /usr/libexec/wifivelocityd
+74786   0.0   3728 /usr/libexec/securityd_system
+74886   0.0  10896 /usr/libexec/trustd
+74916   0.0  11840 /usr/libexec/trustd
+74933   0.0   3424 /usr/libexec/sandboxd
+75054   0.0  60240 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+75108   0.0   2208 /usr/libexec/online-auth-agent
+75309   0.0   5872 /usr/libexec/feedbackd
+75350   0.0   4960 /usr/libexec/assessmentagent
+75396   0.0   7296 /usr/libexec/gamecontrollerd
+75400   0.0   6608 /usr/libexec/gamecontrolleragentd
+75429   0.0   5344 /System/Library/PrivateFrameworks/IntelligenceFlowRuntime.framework/Versions/A/intelligenceflowd
+75626   0.0   5568 /usr/libexec/nfcd
+75635   0.0   3680 /System/Library/PrivateFrameworks/NearFieldPrivateServices.framework/Versions/A/XPCServices/NFStorageServer.xpc/Contents/MacOS/NFStorageServer
+75793   0.0 172560 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+75838   0.0 101712 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+75985   0.0  16160 /System/Library/PrivateFrameworks/AppleMediaServices.framework/Resources/amsaccountsd
+75986   0.0   5424 /usr/libexec/biometrickitd
+76194   0.0   4800 /usr/libexec/amfid
+76548   0.0 124432 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+76778   0.0  41344 /System/Library/PrivateFrameworks/AppSSO.framework/Support/AppSSOAgent.app/Contents/MacOS/AppSSOAgent
+76781   0.0   9680 /System/Library/Frameworks/GSS.framework/Helpers/GSSCred
+76782   0.0  17824 /System/Library/PrivateFrameworks/AppSSO.framework/Support/AppSSODaemon
+76786   0.0  16544 /usr/libexec/replayd
+76799   0.0   3088 /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/HIServices.framework/Versions/A/XPCServices/com.apple.hiservices-xpcservice.xpc/Contents/MacOS/com.apple.hiservices-xpcservice
+76847   0.0   7728 /usr/libexec/ospredictiond
+77214   0.0 229920 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+77666   0.0   8368 /System/Library/PrivateFrameworks/BackgroundTaskManagement.framework/Resources/backgroundtaskmanagementd
+77864   0.0   6128 /System/Library/PrivateFrameworks/CoreAnalytics.framework/Support/analyticsagent
+77877   0.0  18192 /System/Library/Frameworks/CoreTelephony.framework/Support/CommCenter
+77889   0.0  41712 /System/Library/CoreServices/CoreLocationAgent.app/Contents/MacOS/CoreLocationAgent
+77910   0.0   5264 /System/Library/PrivateFrameworks/CommerceKit.framework/Versions/A/Resources/commerce
+77983   0.0  91280 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+78033   0.0  29728 /System/Library/CoreServices/CoreServicesUIAgent.app/Contents/MacOS/CoreServicesUIAgent
+78165   0.0   1168 /bin/zsh
+78168   0.0   1024 /bin/bash
+78194  34.5 315120 /opt/homebrew/Cellar/python@3.13/3.13.3/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+78209   0.0   1168 /bin/zsh
+78213   0.0   1024 /bin/bash
+78225  87.5 150400 /opt/homebrew/Cellar/python@3.13/3.13.3/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+78521   0.0   7776 /System/Library/CoreServices/osanalyticshelper
+78589   0.0   7744 /System/Library/Frameworks/LocalAuthentication.framework/Support/coreauthd
+78792   0.0 258112 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+79174   0.0  29648 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper
+79175   0.0  41584 /Applications/Claude.app/Contents/Frameworks/Claude Helper.app/Contents/MacOS/Claude Helper
+79571   0.0  86592 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+80267   0.0 100448 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+80376   0.0   8560 /opt/homebrew/Cellar/python@3.10/3.10.17/Frameworks/Python.framework/Versions/3.10/Resources/Python.app/Contents/MacOS/Python
+80430   0.0  14432 /System/Library/PrivateFrameworks/iTunesCloud.framework/Support/itunescloudd
+80504   0.0   4272 /Users/user/Library/Application Support/Steam/Steam.AppBundle/Steam/Contents/MacOS/ipcserver
+80505   0.0   7760 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/chrome_crashpad_handler
+80506   0.0  13392 /System/Library/PrivateFrameworks/UserNotificationsCore.framework/Support/usernotificationsd
+80507   0.0  42720 /System/Library/CoreServices/NotificationCenter.app/Contents/MacOS/NotificationCenter
+80508   0.0  43680 /Users/user/Applications/ExampleApp.app/Contents/Frameworks/ExampleApp Helper.app/Contents/MacOS/ExampleApp Helper
+80520   0.1 150096 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper.app/Contents/MacOS/Brave Browser Helper
+80521   0.0  25616 /Users/user/Applications/ExampleApp.app/Contents/Frameworks/ExampleApp Helper.app/Contents/MacOS/ExampleApp Helper
+80523   0.0  41936 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper.app/Contents/MacOS/Brave Browser Helper
+80525   0.0  40512 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper.app/Contents/MacOS/Brave Browser Helper
+80526   0.0 118176 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper.app/Contents/MacOS/Brave Browser Helper
+80543   0.0  53584 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper.app/Contents/MacOS/Brave Browser Helper
+80550   0.0   8944 /System/Library/Frameworks/ApplicationServices.framework/Frameworks/ATS.framework/Support/fontd
+80558   0.0   4624 /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/ATS.framework/Versions/A/Support/fontworker
+80721   0.0 121392 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+80934   0.0 189984 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/155.0.8059.85/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+81024   0.1 614496 /Applications/Google Chrome.app/Contents/MacOS/Google Chrome
+81399   0.0   3664 /System/Library/CoreServices/RFBEventHelper.bundle/Contents/MacOS/RFBEventHelperd
+81422   0.0   7520 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/155.0.8059.85/Helpers/chrome_crashpad_handler
+81432   0.0 132384 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/155.0.8059.85/Helpers/Google Chrome Helper (Aperitif).app/Contents/MacOS/Google Chrome Helper (Aperitif)
+81433   0.1 122640 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/155.0.8059.85/Helpers/Google Chrome Helper (Aperitif).app/Contents/MacOS/Google Chrome Helper (Aperitif)
+81434   0.0  43296 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/155.0.8059.85/Helpers/Google Chrome Helper (Aperitif).app/Contents/MacOS/Google Chrome Helper (Aperitif)
+81439   0.0 118224 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/155.0.8059.85/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+81456   7.9  14544 /System/Library/Frameworks/VideoToolbox.framework/Versions/A/XPCServices/VTDecoderXPCService.xpc/Contents/MacOS/VTDecoderXPCService
+81465   0.0 169040 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/155.0.8059.85/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+81466   0.0  21360 /System/Library/PrivateFrameworks/SafariPlatformSupport.framework/Versions/A/XPCServices/com.apple.SafariPlatformSupport.Helper.xpc/Contents/MacOS/com.apple.SafariPlatformSupport.Helper
+81480   0.0 159008 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/155.0.8059.85/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+81488   0.0   4944 /System/Library/PrivateFrameworks/CommunicationsFilter.framework/CMFSyncAgent
+81550   0.0 118096 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/155.0.8059.85/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+81555   0.0 130592 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/155.0.8059.85/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+81559   1.5 111360 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/155.0.8059.85/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+81564   0.0 249008 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/155.0.8059.85/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+81666   0.0  46848 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/155.0.8059.85/Helpers/Google Chrome Helper (Aperitif).app/Contents/MacOS/Google Chrome Helper (Aperitif)
+81667   0.0  58480 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/155.0.8059.85/Helpers/Google Chrome Helper (Aperitif).app/Contents/MacOS/Google Chrome Helper (Aperitif)
+81679   0.0  14912 /System/Library/PrivateFrameworks/GenerativeExperiencesRuntime.framework/Versions/A/generativeexperiencesd
+81704   0.0 158656 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/155.0.8059.85/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+81715   0.0 108848 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/155.0.8059.85/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+81795   0.0   6016 /System/Library/Frameworks/CryptoTokenKit.framework/ctkd
+81796   0.0   4432 /System/Library/Frameworks/LocalAuthentication.framework/Support/coreauthd
+81921   0.0 137664 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/155.0.8059.85/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+81945   0.0 147744 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/155.0.8059.85/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+81947   0.0 149264 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/155.0.8059.85/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+81955   0.0   4960 /usr/libexec/findmybeaconingd
+81960   0.0   3376 /System/Library/CoreServices/pbs
+81975   0.0 111696 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/155.0.8059.85/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+81981   0.0 113360 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/155.0.8059.85/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+82027   0.0   7280 /usr/sbin/systemsoundserverd
+82028   0.0  20240 /System/Library/CoreServices/iconservicesagent
+82030   0.0   3296 /System/Library/CoreServices/iconservicesd
+82033   0.0  17664 /System/Library/PrivateFrameworks/CalendarDaemon.framework/Support/calaccessd
+82039   0.0   4832 /System/Library/PrivateFrameworks/AssetCacheServices.framework/Versions/A/XPCServices/AssetCacheLocatorService.xpc/Contents/MacOS/AssetCacheLocatorService
+82486   0.0   7376 /System/Library/PrivateFrameworks/iCloudNotification.framework/iCloudNotificationAgent
+82501   0.0  11472 /usr/libexec/appleaccountd
+82537   0.0   1712 /usr/libexec/seputil
+82713   0.0    672 /Applications/Claude.app/Contents/Helpers/disclaimer
+82714   0.0    672 /Applications/Claude.app/Contents/Helpers/disclaimer
+82715   0.0  12608 /opt/homebrew/Cellar/python@3.10/3.10.17/Frameworks/Python.framework/Versions/3.10/Resources/Python.app/Contents/MacOS/Python
+82716   0.0  17600 /Users/user/.local/bin/uv
+82717   0.0  63264 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Plugin).app/Contents/MacOS/Claude Helper (Plugin)
+82718   1.0  42576 /Users/user/Library/Application Support/Claude/Claude Extensions/ant.dir.gh.cursortouch.macos-mcp/.venv/bin/python
+82719   0.0  67280 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Plugin).app/Contents/MacOS/Claude Helper (Plugin)
+82720   0.0  67408 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Plugin).app/Contents/MacOS/Claude Helper (Plugin)
+82881   0.0 220928 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+83337   0.0  10192 /System/Library/PrivateFrameworks/UsageTracking.framework/Versions/A/UsageTrackingAgent
+83750   0.0  95520 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer)
+84151   0.0  15808 /System/Library/Frameworks/AuthenticationServices.framework/Versions/A/XPCServices/com.apple.AuthenticationServices.Helper.xpc/Contents/MacOS/com.apple.AuthenticationServices.Helper
+84368   0.0   9952 /usr/libexec/milod
+84940   0.0    672 /Applications/Claude.app/Contents/Helpers/disclaimer
+84942   0.7 468304 /Users/user/Library/Application Support/Claude/claude-code/2.1.309/5af865b9901c/claude.app/Contents/MacOS/claude
+85213   0.0  31936 /Applications/Docker.app/Contents/MacOS/com.docker.backend
+85228  21.0 353632 /Applications/Docker.app/Contents/MacOS/com.docker.backend
+85249   0.0   6464 com.docker.dev-envs
+85250   0.0  31936 com.docker.build
+85251   0.1  80896 /Applications/Docker.app/Contents/MacOS/Docker Desktop.app/Contents/MacOS/Docker Desktop
+85270   0.0  26816 /Applications/Docker.app/Contents/MacOS/com.docker.virtualization
+85279 129.6 7067712 /System/Library/Frameworks/Virtualization.framework/Versions/A/XPCServices/com.apple.Virtualization.VirtualMachine.xpc/Contents/MacOS/com.apple.Virtualization.VirtualMachine
+85335   0.0  26064 /Applications/Docker.app/Contents/MacOS/Docker Desktop.app/Contents/Frameworks/Docker Desktop Helper (GPU).app/Contents/MacOS/Docker Desktop Helper (GPU)
+85337   0.0  20752 /Applications/Docker.app/Contents/MacOS/Docker Desktop.app/Contents/Frameworks/Docker Desktop Helper.app/Contents/MacOS/Docker Desktop Helper
+85353   0.6  42368 /usr/libexec/duetexpertd
+85576   0.0   2320 /usr/libexec/logd_helper
+86019   0.0   5456 /usr/sbin/spindump
+86022   0.0   3440 /usr/libexec/spindump_agent
+86108   0.0    672 /Applications/Claude.app/Contents/Helpers/disclaimer
+86110  13.0 459568 /Users/user/Library/Application Support/Claude/claude-code/2.1.309/5af865b9901c/claude.app/Contents/MacOS/claude
+86266   1.2 143968 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer)
+86310   0.0 152624 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+86502   0.0   7440 /usr/libexec/nesessionmanager
+87226   0.0  15456 /System/Library/ExtensionKit/Extensions/TextThumbnailExtension.appex/Contents/MacOS/TextThumbnailExtension
+88313   0.0   6928 /usr/libexec/wifip2pd
+88828   0.0  28208 /System/Library/PrivateFrameworks/TelephonyUtilities.framework/callservicesd
+89695   0.0   3968 /System/Library/PrivateFrameworks/SystemStatusServer.framework/Support/systemstatusd
+90006   0.0 151568 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+90016   0.0 113104 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+90249   0.0  12544 /System/Library/Frameworks/CoreSpotlight.framework/spotlightknowledged
+90332   0.0      0 <defunct>
+90446   0.0   2416 /System/Library/Frameworks/MediaAccessibility.framework/Versions/A/XPCServices/com.apple.accessibility.mediaaccessibilityd.xpc/Contents/MacOS/com.apple.accessibility.mediaaccessibilityd
+90563   0.4  47328 /System/Library/CoreServices/Finder.app/Contents/MacOS/Finder
+90595   0.0   5600 /System/Library/PrivateFrameworks/AppleNeuralEngine.framework/XPCServices/ANECompilerService.xpc/Contents/MacOS/ANECompilerService
+90893   0.0  65136 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/155.0.8059.85/Helpers/Google Chrome Helper (Aperitif).app/Contents/MacOS/Google Chrome Helper (Aperitif)
+91115   0.0  33072 /System/Library/CoreServices/Dock.app/Contents/MacOS/Dock
+91131   0.0  29152 /System/Library/CoreServices/Dock.app/Contents/XPCServices/com.apple.dock.extra.xpc/Contents/MacOS/com.apple.dock.extra
+91210   0.0  15584 /System/Library/PrivateFrameworks/IntelligenceFlowContextRuntime.framework/Versions/A/intelligencecontextd
+91214   0.0 201712 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+91499   0.0 139504 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+91525   0.0  10016 /usr/libexec/secinitd
+91527   0.0  22208 /System/Library/PrivateFrameworks/DataAccess.framework/Support/dataaccessd
+91528   0.0   7168 /System/Library/CoreServices/TimeMachine/backupd-helper
+92308   0.0   6096 /usr/libexec/mobileactivationd
+92321   0.0  12448 /usr/libexec/findmylocateagent
+92358   0.0   1632 /usr/libexec/smd
+92366   0.0   7792 /usr/libexec/storagekitd
+92394   0.0  25136 /System/Library/PrivateFrameworks/CacheDelete.framework/deleted
+92423   0.0  17504 /System/Library/Frameworks/QuickLookThumbnailing.framework/Support/com.apple.quicklook.ThumbnailsAgent
+92834   0.0  34432 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Alerts).app/Contents/MacOS/Brave Browser Helper (Alerts)
+93234   0.0   2112 /usr/sbin/distnoted
+93236   0.0   6624 /System/Library/ExtensionKit/Extensions/TGOnDeviceInferenceProviderService.appex/Contents/MacOS/TGOnDeviceInferenceProviderService
+93250   0.0   7856 /System/Library/ExtensionKit/Extensions/GenerativeExperiencesSafetyInferenceProvider.appex/Contents/MacOS/GenerativeExperiencesSafetyInferenceProvider
+93251   0.0   6992 /System/Library/ExtensionKit/Extensions/TGOnDeviceInferenceProviderService.appex/Contents/MacOS/TGOnDeviceInferenceProviderService
+93616   0.0   2432 /usr/bin/caffeinate
+94244   0.0   8768 /System/Library/PrivateFrameworks/StatusKit.framework/StatusKitAgent
+94543   0.0   7664 /usr/libexec/dmd
+94774   0.0  18352 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+95258   0.0  38656 /usr/libexec/spotlightknowledged.updater
+95325   0.0  24224 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+95340   0.0  26768 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+95410   0.0   2688 /usr/libexec/keybagd
+95712   0.0  20080 /System/Library/PrivateFrameworks/AskPermission.framework/Versions/A/Resources/AskPermissionUI.app/Contents/MacOS/AskPermissionUI
+95798   0.0   6864 /System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.Networking.xpc/Contents/MacOS/com.apple.WebKit.Networking
+96299   0.0   2272 /bin/zsh
+96876   0.0 214752 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+97032   0.0   4272 /Applications/Claude.app/Contents/Helpers/chrome-native-host
+97118   0.0   5600 /System/Cryptexes/App/usr/libexec/PasswordBreachAgent
+97368   0.2  92112 /System/Applications/Utilities/Screen Sharing.app/Contents/MacOS/Screen Sharing
+97677   0.0  94096 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+97702   0.0 122128 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+97703   0.0 181184 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+97760   0.0  84608 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+98081   0.0 125664 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+98178   0.0  83840 /Applications/Brave Browser.app/Contents/Frameworks/Brave Browser Framework.framework/Versions/151.1.93.136/Helpers/Brave Browser Helper (Renderer).app/Contents/MacOS/Brave Browser Helper (Renderer)
+98283   0.0  57152 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/155.0.8059.85/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Helper (Aperitif Renderer)
+98572   0.0   2848 /usr/libexec/apfsd
+98623   0.0    848 /System/Library/PrivateFrameworks/MessagesBlastDoorSupport.framework/Versions/A/XPCServices/MessagesBlastDoorService.xpc/Contents/MacOS/MessagesBlastDoorService
+98624   0.0  26192 /System/Library/PrivateFrameworks/IMDPersistence.framework/XPCServices/IMDPersistenceAgent.xpc/Contents/MacOS/IMDPersistenceAgent
+98637   0.0   7040 /System/Library/PrivateFrameworks/CoreRecents.framework/Versions/A/Support/recentsd
+98652   0.0  10112 /System/Library/PrivateFrameworks/PhotoLibraryServices.framework/Versions/A/Support/photolibraryd
+98653   0.0  14880 /usr/libexec/textunderstandingd
+98654   0.0  14928 /usr/libexec/siriknowledged
+98655   0.0   3104 /System/Library/PrivateFrameworks/PowerLog.framework/Versions/A/XPCServices/PerfPowerTelemetryClientRegistrationService.xpc/Contents/MacOS/PerfPowerTelemetryClientRegistrationService
+98656   0.0  17648 /System/Applications/Messages.app/Contents/PlugIns/Messages Assistant Extension.appex/Contents/MacOS/Messages Assistant Extension
+98657   0.0   6784 /System/Library/CoreServices/ScopedBookmarkAgent
+98658   0.0  21952 /System/Library/PrivateFrameworks/SiriInference.framework/Versions/A/siriinferenced
+98685   0.0 208656 /System/Library/PrivateFrameworks/MediaAnalysis.framework/Versions/A/mediaanalysisd
+98742   0.0   6448 /System/Library/PrivateFrameworks/ContextKit.framework/Versions/A/XPCServices/ContextService.xpc/Contents/MacOS/ContextService
+98743   0.0   6224 /System/Library/PrivateFrameworks/ContextKit.framework/Versions/A/XPCServices/ContextService.xpc/Contents/MacOS/ContextService
+99591   0.0  78384 /Applications/Claude.app/Contents/Frameworks/Claude Helper (Renderer).app/Contents/MacOS/Claude Helper (Renderer)
+99683   0.0   5008 /usr/libexec/countryd
+99913   0.0   4448 /usr/libexec/powerexperienced
+84968   0.0   1552 /bin/zsh
+86139   0.0   1552 /bin/zsh
+69759   0.0   1552 /bin/zsh
+70353   0.0   1568 /bin/zsh
+75129   0.0   1664 /bin/zsh

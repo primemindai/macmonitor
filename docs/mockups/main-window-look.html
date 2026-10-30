@@ -1,0 +1,151 @@
+<h2>Which main window feels right?</h2>
+<p class="subtitle">All three are live and moving. The numbers are fake for now. Click the one you like (you can pick more than one if you want a mix).</p>
+
+<style>
+  .mm { background:#0d1117; color:#e6edf3; border-radius:12px; padding:14px; font:12px -apple-system, "SF Pro Text", system-ui, sans-serif; min-height:340px; }
+  .mm .row { display:flex; gap:10px; }
+  .mm .tile { background:#161b22; border:1px solid #232a33; border-radius:10px; padding:10px; flex:1; }
+  .mm .lbl { color:#8b949e; font-size:10px; text-transform:uppercase; letter-spacing:.06em; }
+  .mm .big { font-size:22px; font-weight:600; font-variant-numeric:tabular-nums; }
+  .mm svg { display:block; width:100%; }
+  .why { margin-top:10px; background:linear-gradient(90deg,#3b1d0b,#161b22); border:1px solid #6e3b12; border-radius:10px; padding:8px 10px; }
+  .why b { color:#ffb86b; }
+  .fan { display:inline-block; animation:spin .6s linear infinite; }
+  @keyframes spin { to { transform:rotate(360deg);} }
+  .core { height:46px; width:14px; background:#21262d; border-radius:3px; position:relative; overflow:hidden; }
+  .core i { position:absolute; bottom:0; left:0; right:0; border-radius:3px; transition:height .5s ease, background .5s; }
+  .die { position:relative; background:#11161d; border:1px solid #2d3540; border-radius:10px; height:220px; }
+  .blk { position:absolute; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:10px; color:#0d1117; font-weight:600; transition:background .6s; }
+  .calm { background:#f6f6f8; color:#1d1d1f; border-radius:12px; padding:14px; font:12px -apple-system, system-ui, sans-serif; min-height:340px; }
+  .calm .sec { background:#fff; border-radius:10px; padding:10px 12px; margin-bottom:8px; box-shadow:0 1px 2px rgba(0,0,0,.06); }
+  .calm .bar { height:6px; background:#e5e5ea; border-radius:3px; overflow:hidden; margin-top:4px; }
+  .calm .bar i { display:block; height:100%; border-radius:3px; transition:width .6s ease; }
+  .calm .r { display:flex; justify-content:space-between; }
+</style>
+
+<div class="cards" data-multiselect>
+
+  <!-- A -->
+  <div class="card" data-choice="a-mission-control" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="mm">
+        <div class="row">
+          <div class="tile"><div class="lbl">CPU</div><div class="big" id="a-cpu">42%</div><svg viewBox="0 0 100 30" preserveAspectRatio="none" height="34"><polyline id="a-cpu-line" fill="none" stroke="#58a6ff" stroke-width="1.5"/></svg></div>
+          <div class="tile"><div class="lbl">GPU</div><div class="big" id="a-gpu">18%</div><svg viewBox="0 0 100 30" preserveAspectRatio="none" height="34"><polyline id="a-gpu-line" fill="none" stroke="#a371f7" stroke-width="1.5"/></svg></div>
+          <div class="tile"><div class="lbl">Hottest</div><div class="big" id="a-temp">71°</div><svg viewBox="0 0 100 30" preserveAspectRatio="none" height="34"><polyline id="a-temp-line" fill="none" stroke="#ff7b72" stroke-width="1.5"/></svg></div>
+          <div class="tile"><div class="lbl">Fan <span class="fan">✢</span></div><div class="big" id="a-fan">2,310</div><svg viewBox="0 0 100 30" preserveAspectRatio="none" height="34"><polyline id="a-fan-line" fill="none" stroke="#3fb950" stroke-width="1.5"/></svg></div>
+        </div>
+        <div class="row" style="margin-top:10px">
+          <div class="tile"><div class="lbl">Power by part (watts)</div>
+            <svg viewBox="0 0 300 70" height="80"><g id="a-stack"></g></svg>
+          </div>
+        </div>
+        <div class="why">🌀 <b>Why the fan is on:</b> GPU hit 84°C. Top cause: <b>Chrome Helper (GPU)</b> using 9.2 W.</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A. Mission control</h3>
+      <p>Dark, dense, lots of live line graphs. A big "why the fan is on" bar at the bottom. Feels like a pro tool.</p>
+    </div>
+  </div>
+
+  <!-- B -->
+  <div class="card" data-choice="b-chip-map" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="mm">
+        <div class="lbl" style="margin-bottom:6px">Your M4 Pro chip, live heat map</div>
+        <div class="die" id="b-die"></div>
+        <div class="row" style="margin-top:10px;align-items:flex-end" id="b-cores"></div>
+        <div class="why">🌀 <b>Fan ramping to 3,800 RPM:</b> the P-core cluster is at 92°C and climbing.</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B. Chip map</h3>
+      <p>A drawing of your actual chip. Each part glows hotter as it heats up. Bars under it show every core. The "wow" option.</p>
+    </div>
+  </div>
+
+  <!-- C -->
+  <div class="card" data-choice="c-calm" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="calm">
+        <div class="sec"><div class="r"><b>CPU</b><span id="c-cpu">42%</span></div><div class="bar"><i id="c-cpu-b" style="width:42%;background:#0a84ff"></i></div></div>
+        <div class="sec"><div class="r"><b>GPU</b><span id="c-gpu">18%</span></div><div class="bar"><i id="c-gpu-b" style="width:18%;background:#bf5af2"></i></div></div>
+        <div class="sec"><div class="r"><b>Memory</b><span>31.4 of 48 GB</span></div><div class="bar"><i style="width:65%;background:#30d158"></i></div></div>
+        <div class="sec"><div class="r"><b>Hottest sensor</b><span id="c-temp">71°C</span></div><div class="bar"><i id="c-temp-b" style="width:71%;background:#ff9f0a"></i></div></div>
+        <div class="sec"><div class="r"><b>Fans</b><span id="c-fan">2,310 RPM</span></div><div class="bar"><i id="c-fan-b" style="width:40%;background:#64d2ff"></i></div></div>
+        <div class="sec" style="background:#fff4e5"><b>Why the fan is on:</b> chip warm from Xcode build.</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C. Calm and Apple-like</h3>
+      <p>Light, roomy, looks like System Settings. Soft bars that slide. Graphs open when you click a row.</p>
+    </div>
+  </div>
+
+</div>
+
+<h3 style="margin-top:28px">And the menu bar</h3>
+<p class="subtitle">This is what sits at the top of your screen all the time.</p>
+<div class="mockup">
+  <div class="mockup-header">Menu bar item</div>
+  <div class="mockup-body" style="background:#1e1e1e;color:#fff;font:13px -apple-system,system-ui;padding:8px 14px;display:flex;gap:18px;justify-content:flex-end;align-items:center">
+    <span>🔋 92%</span>
+    <span style="background:#333;border-radius:5px;padding:2px 8px;font-variant-numeric:tabular-nums">
+      <svg width="34" height="12" style="vertical-align:middle"><polyline id="mb-line" fill="none" stroke="#58a6ff" stroke-width="1.5"/></svg>
+      CPU <b id="mb-cpu">42%</b> · <b id="mb-temp">71°</b> · <span class="fan">✢</span> <b id="mb-fan">2.3k</b>
+    </span>
+    <span>Wed 4:31 PM</span>
+  </div>
+</div>
+
+<script>
+(function(){
+  const N=40, hist={cpu:[],gpu:[],temp:[],fan:[]};
+  let cpu=42,gpu=18,temp=71,fan=2310;
+  for(let i=0;i<N;i++){hist.cpu.push(40);hist.gpu.push(18);hist.temp.push(70);hist.fan.push(2300);}
+  const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+  function line(id,arr,min,max){const el=document.getElementById(id);if(!el)return;
+    el.setAttribute('points',arr.map((v,i)=>`${i*100/(N-1)},${30-(v-min)/(max-min)*28-1}`).join(' '));}
+  function heat(t){ // 40..100C -> blue..red
+    const x=clamp((t-40)/60,0,1); const h=220-220*x; return `hsl(${h},85%,${55+x*5}%)`; }
+  // chip map blocks
+  const die=document.getElementById('b-die');
+  const blocks=[
+    {n:'P-cores',x:4,y:6,w:44,h:38,base:75},{n:'E-cores',x:50,y:6,w:20,h:38,base:55},
+    {n:'GPU',x:4,y:48,w:66,h:46,base:65},{n:'Neural Engine',x:72,y:6,w:24,h:28,base:45},
+    {n:'Memory',x:72,y:38,w:24,h:26,base:50},{n:'Media',x:72,y:68,w:24,h:26,base:42}];
+  blocks.forEach(b=>{const d=document.createElement('div');d.className='blk';
+    Object.assign(d.style,{left:b.x+'%',top:b.y+'%',width:b.w+'%',height:b.h+'%'});
+    d.textContent=b.n;b.el=d;b.t=b.base;die.appendChild(d);});
+  const coresEl=document.getElementById('b-cores'); const cores=[];
+  for(let i=0;i<14;i++){const c=document.createElement('div');c.className='core';
+    const f=document.createElement('i');c.appendChild(f);coresEl.appendChild(c);cores.push({f,v:30+Math.random()*50,p:i<10});
+    if(i==9){const s=document.createElement('div');s.style.width='8px';coresEl.appendChild(s);}}
+  // stacked power
+  const stack=document.getElementById('a-stack'); const pw={P:[],E:[],G:[],A:[]};
+  for(let i=0;i<30;i++){pw.P.push(8);pw.E.push(1);pw.G.push(4);pw.A.push(.3);}
+  function tick(){
+    cpu=clamp(cpu+(Math.random()-.5)*14,5,98);gpu=clamp(gpu+(Math.random()-.5)*10,2,95);
+    temp=clamp(temp+(Math.random()-.48)*3,45,99);fan=clamp(fan+(temp-70)*20+(Math.random()-.5)*80,1200,5800);
+    for(const k of ['cpu','gpu','temp','fan']){hist[k].shift();hist[k].push({cpu,gpu,temp,fan}[k]);}
+    line('a-cpu-line',hist.cpu,0,100);line('a-gpu-line',hist.gpu,0,100);line('a-temp-line',hist.temp,40,100);line('a-fan-line',hist.fan,1000,6000);
+    line('mb-line',hist.cpu.slice(-20).concat([]),0,100);
+    const set=(id,t)=>{const e=document.getElementById(id);if(e)e.textContent=t;};
+    set('a-cpu',Math.round(cpu)+'%');set('a-gpu',Math.round(gpu)+'%');set('a-temp',Math.round(temp)+'°');set('a-fan',Math.round(fan).toLocaleString());
+    set('c-cpu',Math.round(cpu)+'%');set('c-gpu',Math.round(gpu)+'%');set('c-temp',Math.round(temp)+'°C');set('c-fan',Math.round(fan).toLocaleString()+' RPM');
+    set('mb-cpu',Math.round(cpu)+'%');set('mb-temp',Math.round(temp)+'°');set('mb-fan',(fan/1000).toFixed(1)+'k');
+    const w=(id,v)=>{const e=document.getElementById(id);if(e)e.style.width=v+'%';};
+    w('c-cpu-b',cpu);w('c-gpu-b',gpu);w('c-temp-b',temp);w('c-fan-b',fan/60);
+    blocks.forEach(b=>{b.t=clamp(b.t+(Math.random()-.5)*6+(b.n==='P-cores'?(cpu-50)/40:0)+(b.n==='GPU'?(gpu-40)/40:0),35,100);b.el.style.background=heat(b.t);b.el.textContent=b.n+' '+Math.round(b.t)+'°';});
+    cores.forEach(c=>{c.v=clamp(c.v+(Math.random()-.5)*30,3,100);c.f.style.height=c.v+'%';c.f.style.background=c.p?'#58a6ff':'#3fb950';});
+    for(const k in pw){pw[k].shift();}
+    pw.P.push(clamp(cpu/7+Math.random(),1,18));pw.E.push(clamp(1+Math.random(),0,3));pw.G.push(clamp(gpu/8+Math.random(),0,14));pw.A.push(Math.random()*.8);
+    const cols={P:'#58a6ff',E:'#3fb950',G:'#a371f7',A:'#ffa657'};
+    let html='';const W=300/30;
+    for(let i=0;i<30;i++){let y=70;for(const k of ['E','P','G','A']){const h=pw[k][i]*1.9;y-=h;html+=`<rect x="${i*W}" y="${y}" width="${W-1}" height="${h}" fill="${cols[k]}" rx="1"/>`;}}
+    stack.innerHTML=html;
+  }
+  tick(); setInterval(tick,700);
+})();
+</script>

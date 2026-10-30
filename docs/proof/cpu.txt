@@ -1,0 +1,77 @@
+# MacMonitor CPU cost (spec section 4). 100% = one core. Budget: menu bar only <= 3%, window open <= 15%.
+# Machine: MacBook Pro M4 Pro (14 cores), macOS 26.5, release build installed at ~/Applications/MacMonitor.app.
+# Method: scripts/measure-cpu.sh <label> 60
+#   1. ps %CPU of the app, sampled once a second for 60 s, averaged (the spec's method).
+#   2. Exact CPU seconds from the app's own getrusage log (defaults key cpuLogPath, a line every 5 s):
+#      RUSAGE_SELF for the app, RUSAGE_CHILDREN for the ps (every 5 s) and top runs it waits for.
+#      This is the number held to the budget, since it counts child processes.
+
+## Follow-ups build (2026-10-28: local-only volume read, wake interval guard, instance lock, P core cold start)
+
+[menu bar only (follow-ups build, run 1)] 2026-10-28 22:53:24, --background, load average 20.15 (other work running)
+  ps %CPU average (app only): 0.25%
+  getrusage over 67 s: app 1.11%, child processes (ps, top) 0.68%, total 1.78% of one core   -> PASS (<= 3%)
+[menu bar only (follow-ups build, run 2)] 2026-10-28 22:54:31, load average 9.46
+  ps %CPU average (app only): 0.71%
+  getrusage over 67 s: app 1.12%, child processes (ps, top) 0.69%, total 1.81% of one core   -> PASS (<= 3%)
+Cold start (the first 180 s after launch, with the extra Tp-only reads every 5 s), from the same getrusage log:
+  2.07% of one core including launch; 1.82% over the next 149 s.
+
+## Adaptive P core keys build (2026-10-28, still 10 P core keys per tick)
+
+[menu bar only (P core bank picker, run 1)] 2026-10-28 22:19:02, --background, load average 13.69 (other work running)
+  ps %CPU average (app only): 0.69%
+  getrusage over 67 s: app 1.78%, child processes (ps, top) 0.83%, total 2.61% of one core   -> PASS (<= 3%)
+[menu bar only (P core bank picker, run 2)] 2026-10-28 22:20:10, load average 16.54
+  ps %CPU average (app only): 3.34%
+  getrusage over 67 s: app 1.63%, child processes (ps, top) 0.81%, total 2.44% of one core   -> PASS (<= 3%)
+  (ps swings with the load; the getrusage total is the number held to the budget.)
+
+## Review batch build (2026-10-28, after the Should-fix batch: top bursts, 30 s P core hold, sensor gaps)
+
+[menu bar only (review batch build)] 2026-10-28 22:01:27, app launched with --background (no window), Mac not heating
+  ps %CPU average (app only): 1.59%
+  getrusage over 67 s: app 1.66%, child processes (ps, top) 0.91%, total 2.57% of one core   -> PASS (<= 3%)
+  Load average at start: 9.80 5.99 5.12 (other work was running on the Mac).
+
+[window open, Overview page (review batch build)] 2026-10-28 22:03:05, window on screen (CGWindowList: layer 0, 1220x820)
+  ps %CPU average (app only): 6.19%
+  getrusage over 67 s: app 5.34%, child processes (ps, top) 5.36%, total 10.69% of one core  -> PASS (<= 15%)
+
+Menu bar only while the Mac heats up (review R2-S1): top now runs in a burst of 3 runs 16 s apart, then not again
+for 15 minutes. One run of the app's top command costs 0.71 to 0.72 s of CPU (/usr/bin/time, 3 runs: user 0.08,
+sys 0.63 to 0.64). So a hot Mac adds about 2.2 s per 15 minutes, 0.24% of one core: 2.57% + 0.24% = 2.81% averaged.
+The 60 s window that holds a burst itself reads higher (about 2.57% + 3.6% = 6.2%); it is the price of being able to
+raise the kernel_task alert without the window open, and happens at most once per 15 minutes, only while hot.
+A cool Mac runs no top at all in menu bar mode (the measurement above: child processes are ps only).
+
+## Final build (2026-10-28)
+
+[menu bar only (final build)] 2026-10-28 21:00:59, app launched with --background (no window)
+  ps %CPU average (app only): 1.21%
+  getrusage over 67 s: app 1.57%, child processes (ps, top) 0.88%, total 2.45% of one core   -> PASS (<= 3%)
+
+[window open, Overview page (final build)] 2026-10-28 21:02:28, window visible on screen (checked with CGWindowList)
+  ps %CPU average (app only): 4.77%
+  getrusage over 67 s: app 5.20%, child processes (ps, top) 6.42%, total 11.61% of one core  -> PASS (<= 15%)
+  Load average during the run: 5.49 6.26 6.09 (other work was running on the Mac).
+
+## How we got here (measured, in order)
+
+1. First window build: 85.8% (ps) with the window open. Profile (sample): the whole page layer was redrawn on the CPU
+   every frame, plus a full layout pass each frame. Cause: continuous SwiftUI animations (sparkline glide, a 30 fps
+   fan icon, bar widths animated by frame).
+2. Moved the sparkline glide and the fan spin to Core Animation layers (run by the system render server),
+   bars slide with an offset: 48% with the window open. Profile: numericText rolls (with blur) and bar animations,
+   about 15 at once every second, still redrew the page each frame at 120 Hz.
+3. Moved rolling numbers (CATextLayer push transition) and sliding bars (implicit layer animation) to Core Animation
+   too. SwiftUI now draws one frame per second: 12.8% then 11.6% with the window open.
+4. Menu bar only was 3.66% at first. `top` costs about 0.72 s of CPU per run (measured with /usr/bin/time: user 0.08,
+   sys 0.64) and `ps` about 25 ms. Cut: `top` now runs every 15 s only while the window is open, and every 120 s
+   while only the menu bar runs and the fans ramp (TopSchedule, tested). Menu bar only: 2.71%, then 2.45%.
+   (Replaced in the review batch by the heating burst above.)
+   The SMC key list and HID reads did not need cutting.
+
+## Per-tick cost from the app's log (menu bar only, wall time per 1 s sample)
+  tick_ms ~13 to 22 (SMC ~7 to 9 ms, IOReport ~5 to 10 ms, other ~1 ms), history write ~0.5 to 0.9 ms.
+  Wall time includes waiting in the kernel; the CPU cost is the getrusage figure above.

@@ -1,0 +1,19 @@
+# History DB size (spec sections 4 and 6: must stay under 150 MB), 2026-10-28 21:13
+# File: ~/Library/Application Support/MacMonitor/history.sqlite (WAL mode)
+
+## Measured after this run
+Files on disk: db 1.38 MB + wal 1.83 MB + shm 0.03 MB = 3.24 MB
+Rows: samples 2441 (1 Hz, spans 42 min with restarts), samples_1m 41, procs 6896, procs_1m 349, events 1
+Bytes per table (sqlite dbstat, pages incl. indexes): samples 761856, procs 397312, procs_ts 98304, samples_1m 49152, procs_1m 24576, latest 16384, sqlite_schema 16384, events 4096, events_ts 4096, meta 4096, procs_1m_ts 4096, sqlite_autoindex_meta_1 4096
+
+## Projection to steady state (24 h of full detail + 30 days of per-minute rollups), from measured bytes per row
+samples     (1 Hz, kept 24 h):      312 B/row x 86,400 rows                 = 27.0 MB
+procs       (every 5 s, kept 24 h): 14.1 rows/sample x 72 B x 17,280 samples = 17.5 MB
+samples_1m  (per minute, 30 d):     1199 B/row x 43,200 rows                = 51.8 MB
+procs_1m    (per minute, 30 d):     8.5 rows/min x 82 B x 43,200 min       = 30.2 MB
+events: a few hundred bytes each, negligible.
+Projected total: about 127 MB, under the 150 MB cap. The WAL file is checkpointed by SQLite at about 4 MB.
+
+Note: builder 1 measured about 83 MB for samples + rollups with bulk test data (progress ledger, Task 7).
+This live projection is higher mainly because it includes the two process tables. It is an estimate from
+42 minutes of data; pages that are not yet full make small tables look a little bigger per row.

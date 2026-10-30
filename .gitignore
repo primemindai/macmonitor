@@ -1,0 +1,17 @@
+.build/
+.swiftpm/
+*.app
+.DS_Store
+# compiled research probes
+research/display_probe
+research/fan_watch
+research/hid_motion_lid
+research/hid_sensors
+research/io_probe
+research/ioreport_list
+research/ioreport_sample
+research/nvme_smart
+research/proc_rusage
+research/proc_taskinfo_test
+research/smc_dump
+research/sys_probe
