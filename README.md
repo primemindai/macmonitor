@@ -33,6 +33,9 @@ It reads hardware sensors read only. It never writes to the hardware, never need
   Click a row to open its history chart (15 minutes, 1 hour, 24 hours or 30 days).
 - **Events:** fan ramps, heat, throttle signs, memory, swap, disk, SSD, battery flag and wake.
 - **Settings:** alert switches and thresholds, start at login, sample rate, history size and a clear button.
+- **Connect AI:** copy-paste setup for Claude Code, Codex and Claude Desktop, with this app's real MCP server path
+  filled in, a "Test connection" button, and the list of read-only tools. It only copies; it never edits your
+  Claude or Codex config files.
 
 Sensor names we have not proven carry a **best guess** tag. A reading that is missing shows
 "not available" or `--`, never a fake zero.
@@ -94,7 +97,11 @@ scripts/test.sh
 
 ## Claude and Codex can read it too (MCP)
 
-The MCP server is a separate program inside the app. The commands below use the path from a source build
+**Easiest way:** open MacMonitor, click **Connect AI** in the sidebar, and click **Copy** next to the command for
+your tool. The page fills in the right path for wherever the app is installed, and **Test connection** checks
+that the server answers.
+
+To do it by hand: the MCP server is a separate program inside the app. The commands below use the path from a source build
 (`~/Applications`). If you downloaded the app into your Applications folder, use
 `/Applications/MacMonitor.app/Contents/MacOS/macmonitor-mcp` instead.
 
