@@ -64,6 +64,16 @@ func fanSnap(_ t: Double, actual: Double = 4_600, target: Double = 4_600, p0: Do
         #expect(x.headline.contains(r))
     }
 
+    /// The card title must not say "Why the fan is on" above "Fan at 0 RPM, off."
+    @Test func titleNeverSaysOnWhenFanIsOff() throws {
+        let off = try #require(FanExplainer.explain(window: [fanSnap(1, actual: 0, target: 0)]))
+        #expect(off.headline.hasPrefix("Fan at 0 RPM, off."))
+        #expect(FanExplainer.title(off) == "Fan is off")
+        let on = try #require(FanExplainer.explain(window: [fanSnap(1, actual: 3_000, target: 4_200)]))
+        #expect(FanExplainer.title(on) == "Why the fan is on")
+        #expect(!FanExplainer.title(nil).contains("is on"), "no reading yet, so no claim the fan is on")
+    }
+
     @Test func noFansNoExplanation() {
         #expect(FanExplainer.explain(window: [Snapshot.empty(ts: Date())]) == nil)
         #expect(FanExplainer.explain(window: []) == nil)
