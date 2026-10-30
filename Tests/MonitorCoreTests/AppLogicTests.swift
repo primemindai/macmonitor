@@ -162,28 +162,20 @@ import Foundation
 /// A popover taller than the space under the menu bar gets its top cut off, so it must cap and scroll instead.
 @Suite struct PopoverFitTests {
     @Test(arguments: [
-        // anchor bottom, visible bottom (Dock top), content height
-        (949.0, 73.0, 486.0),   // 14 inch MacBook Pro, Dock at the bottom: fits
-        (949.0, 73.0, 2_000.0), // content far taller than the screen
-        (500.0, 0.0, 486.0),    // short screen: just too tall
-        (100.0, 0.0, 486.0),    // tiny space: never zero or negative
+        // anchor bottom, visible bottom (Dock top), content height, must scroll
+        (949.0, 73.0, 486.0, false),   // 14 inch MacBook Pro, Dock at the bottom: the real popover fits
+        (949.0, 73.0, 842.0, false),   // content exactly the space left: fits, no scroll
+        (949.0, 73.0, 2_000.0, true),  // content far taller than the screen
+        (500.0, 0.0, 486.0, true),     // short screen: just too tall
+        (100.0, 0.0, 486.0, true),     // tiny space: never zero or negative
     ])
-    func popoverStaysOnScreen(anchor: Double, visibleMinY: Double, content: Double) {
+    func popoverStaysOnScreen(anchor: Double, visibleMinY: Double, content: Double, scrolls: Bool) {
         let maxH = PopoverFit.maxContentHeight(anchorMinY: anchor, visibleMinY: visibleMinY)
-        let fit = PopoverFit.height(content: content, maxHeight: maxH)
-        #expect(fit.height >= PopoverFit.minHeight)
-        #expect(fit.height <= content)
-        #expect(fit.scrolls == (content > maxH))
+        #expect(maxH >= PopoverFit.minHeight)
+        #expect((content > maxH) == scrolls)
         if anchor - visibleMinY >= PopoverFit.minHeight + PopoverFit.chrome {
-            #expect(anchor - fit.height - PopoverFit.chrome >= visibleMinY, "popover window runs past the bottom of the screen")
+            #expect(anchor - min(content, maxH) - PopoverFit.chrome >= visibleMinY, "popover window runs past the bottom of the screen")
         }
-    }
-
-    @Test func boundaryBetweenFitAndScroll() {
-        let maxH = PopoverFit.maxContentHeight(anchorMinY: 949, visibleMinY: 73)
-        #expect(PopoverFit.height(content: maxH, maxHeight: maxH) == (maxH, false))
-        #expect(PopoverFit.height(content: maxH + 1, maxHeight: maxH) == (maxH, true))
-        #expect(PopoverFit.height(content: maxH - 1, maxHeight: maxH) == (maxH - 1, false))
     }
 }
 

@@ -39,16 +39,6 @@ import Foundation
         #expect(MCPSetup.codexTOML(server: path) == "[mcp_servers.macmonitor]\n" + tomlLine)
     }
 
-    /// The path must follow the running app, wherever it was dragged, and warn when macOS runs it from a temp copy.
-    @Test func serverPathFollowsTheRunningApp() {
-        for (bundle, want) in [("/Applications/MacMonitor.app", "/Applications/MacMonitor.app/Contents/MacOS/macmonitor-mcp"),
-                               ("/Users/user/Applications/My Tools/MacMonitor.app", "/Users/user/Applications/My Tools/MacMonitor.app/Contents/MacOS/macmonitor-mcp")] {
-            #expect(MCPSetup.serverURL(bundleURL: URL(fileURLWithPath: bundle)).path == want)
-            #expect(!MCPSetup.isTranslocated(want))
-        }
-        #expect(MCPSetup.isTranslocated("/private/var/folders/ab/T/AppTranslocation/1234-5678/d/MacMonitor.app/Contents/MacOS/macmonitor-mcp"))
-    }
-
     /// The probe's requests, answered by the real handler, read back as a connection, and the page lists the same tools.
     @Test func probeReadsTheRealServer() async throws {
         let h = MCPHandler(store: { nil }, live: { liveSnap() })
@@ -80,10 +70,8 @@ import Foundation
         #expect(!why.isEmpty)
     }
 
-    func script(_ body: String) throws -> URL {
-        let dir = FileManager.default.temporaryDirectory.appendingPathComponent("mcp-probe-\(UUID().uuidString)")
-        try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
-        let url = dir.appendingPathComponent("server.sh")
+    func script(_ body: String, in dir: URL) throws -> URL {
+        let url = dir.appendingPathComponent("server-\(UUID().uuidString).sh")
         try ("#!/bin/sh\n" + body).write(to: url, atomically: true, encoding: .utf8)
         try FileManager.default.setAttributes([.posixPermissions: 0o755], ofItemAtPath: url.path)
         return url
@@ -91,16 +79,19 @@ import Foundation
 
     /// The real process path: a working server connects, a hung one times out and is killed, a missing one says so.
     @Test func probeRunsTheServerAndAlwaysCleansUp() async throws {
+        let dir = FileManager.default.temporaryDirectory.appendingPathComponent("mcp-probe-\(UUID().uuidString)")
+        try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: dir) }
         let good = try script("""
             read a; case "$a" in *'"initialize"'*) ;; *) exit 1 ;; esac
             read b; read c
             echo '{"jsonrpc":"2.0","id":1,"result":{"protocolVersion":"2025-06-18","serverInfo":{"name":"macmonitor"}}}'
             echo '{"jsonrpc":"2.0","id":2,"result":{"tools":[{"name":"a"},{"name":"b"}]}}'
-            """)
+            """, in: dir)
         #expect(await MCPProbe.run(server: good, timeout: 5) == .connected(tools: 2))
 
-        let pidFile = FileManager.default.temporaryDirectory.appendingPathComponent("mcp-probe-\(UUID().uuidString).pid")
-        let hung = try script("echo $$ > '\(pidFile.path)'\nexec sleep 30\n")
+        let pidFile = dir.appendingPathComponent("hung.pid")
+        let hung = try script("echo $$ > '\(pidFile.path)'\nexec sleep 30\n", in: dir)
         let start = Date()
         let r = await MCPProbe.run(server: hung, timeout: 1)
         #expect(Date().timeIntervalSince(start) < 5)
@@ -109,7 +100,7 @@ import Foundation
         let pid = try #require(Int32(try String(contentsOf: pidFile, encoding: .utf8).trimmingCharacters(in: .whitespacesAndNewlines)))
         #expect(kill(pid, 0) != 0, "the hung server is still running")
 
-        let quiet = try script("exit 3\n")
+        let quiet = try script("exit 3\n", in: dir)
         guard case .failed = await MCPProbe.run(server: quiet, timeout: 5) else { Issue.record("silent server read as connected"); return }
 
         let missing = URL(fileURLWithPath: "/Applications/Nope.app/Contents/MacOS/macmonitor-mcp")

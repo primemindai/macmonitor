@@ -5,27 +5,22 @@ import MonitorCore
 struct MenuBarPopover: View {
     @EnvironmentObject private var model: AppModel
     @Environment(\.theme) private var theme
-    @Environment(\.renderMode) private var renderMode
     var openWindow: () -> Void
     var quit: () -> Void
     /// Tallest the content may be: the space under the menu bar item on this screen (see PopoverFit).
     var maxHeight: CGFloat = 10_000
-    @State private var contentHeight: CGFloat?
 
     var body: some View {
-        if renderMode {
+        // The content at its own height when it fits; otherwise the same content in a scroll view capped at
+        // maxHeight, so the top is never cut off. Both are sized in one layout pass, so the popover opens at its
+        // final size instead of opening tall and then shrinking.
+        ViewThatFits(in: .vertical) {
             content
-        } else {
-            // Taller than the space under the menu bar: cap the height and scroll, so the top is never cut off.
-            let fit = PopoverFit.height(content: Double(contentHeight ?? maxHeight), maxHeight: Double(maxHeight))
-            ScrollView(.vertical) {
-                content.onGeometryChange(for: CGFloat.self, of: { $0.size.height }) { contentHeight = $0 }
-            }
-            .scrollDisabled(!fit.scrolls)
-            .scrollIndicators(fit.scrolls ? .automatic : .never)
-            .frame(width: 380, height: CGFloat(fit.height))
-            .background(theme.bg)
+            ScrollView(.vertical) { content }
         }
+        .frame(width: 380)
+        .frame(maxHeight: maxHeight)
+        .background(theme.bg)
     }
 
     @ViewBuilder private var content: some View {

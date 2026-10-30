@@ -206,6 +206,7 @@ public enum WindowPolicy {
 /// Height of the menu bar popover. NSPopover places its window for its starting size; when the SwiftUI content
 /// then turns out taller, the window grows up from a fixed bottom and its top goes under the menu bar. So the app
 /// sizes the popover up front and never taller than the space under the menu bar item; taller content scrolls.
+/// The fit-or-scroll choice itself is made by SwiftUI (ViewThatFits in MenuBarPopover) against this height.
 public enum PopoverFit {
     /// Popover border and arrow around the content (measured: the window is 26 pt taller than its content).
     public static let chrome = 26.0
@@ -217,11 +218,6 @@ public enum PopoverFit {
     /// Tallest content that fits between the bottom of the menu bar item and the bottom of the visible screen.
     public static func maxContentHeight(anchorMinY: Double, visibleMinY: Double) -> Double {
         max(minHeight, anchorMinY - visibleMinY - chrome - margin)
-    }
-
-    /// The content height to use, and whether it has to scroll.
-    public static func height(content: Double, maxHeight: Double) -> (height: Double, scrolls: Bool) {
-        content > maxHeight ? (maxHeight, true) : (content, false)
     }
 }
 

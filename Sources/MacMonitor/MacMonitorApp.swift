@@ -111,8 +111,8 @@ enum MacMonitorMain {
                            maxHeight: popoverMaxHeight(under: b))
                 .environmentObject(model)
                 .themed())
-        // Size the popover from the SwiftUI content before it is placed. Without this NSPopover places a 320 pt
-        // window, Auto Layout then grows it upward to the content height, and the top slides under the menu bar.
+        // Size the popover from the SwiftUI content before it is placed. Without this NSPopover places a window at
+        // a default size, Auto Layout then grows it upward to the content height, and the top slides under the menu bar.
         host.sizingOptions = [.preferredContentSize]
         p.contentViewController = host
         popover = p
