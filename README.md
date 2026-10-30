@@ -1,10 +1,12 @@
 # MacMonitor
 
+**MCP for your Mac hardware.** Works with Claude and Codex.
+
 MacMonitor is a free, open-source Mac app that shows what your Mac's hardware is doing, live.
 It answers one question first: **why is my fan on right now?**
 
 It lives in the menu bar, opens a window full of live graphs, keeps history, sends alerts,
-and lets Claude read the same data through an MCP server.
+and lets AI agents like Claude and Codex read the same data through an MCP server.
 
 It reads hardware sensors read only. It never writes to the hardware, never needs an admin password, and sends nothing over the network.
 
@@ -67,7 +69,7 @@ Run the tests. Use the script: plain `swift test` on Command Line Tools cannot f
 scripts/test.sh
 ```
 
-## Claude can read it too (MCP)
+## Claude and Codex can read it too (MCP)
 
 The MCP server is a separate program inside the app:
 
@@ -80,6 +82,14 @@ Register it with Claude Code:
 ```bash
 claude mcp add -s user macmonitor -- ~/Applications/MacMonitor.app/Contents/MacOS/macmonitor-mcp
 ```
+
+Register it with Codex:
+
+```bash
+codex mcp add macmonitor -- ~/Applications/MacMonitor.app/Contents/MacOS/macmonitor-mcp
+```
+
+It is a standard stdio MCP server, so any other MCP client works the same way: point it at that path.
 
 Tools (all read only):
 
