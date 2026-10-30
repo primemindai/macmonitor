@@ -15,6 +15,15 @@ public enum FanExplainer {
         return .steady
     }
 
+    /// Title of the fan card. It follows the fan state, so it never says "on" above "Fan at 0 RPM, off."
+    public static func title(_ x: FanExplanation?) -> String {
+        switch x?.state {
+        case nil: return "What the fan is doing"
+        case .off?: return "Fan is off"
+        case .rampingUp?, .rampingDown?, .steady?: return "Why the fan is on"
+        }
+    }
+
     /// Change in the fan's target over the last 10 s of the window (0 when there is no older reading).
     public static func targetTrend10s(window: [Snapshot], fanIndex: Int) -> Double {
         guard let last = window.last, let now = last.fan(fanIndex)?.targetRPM else { return 0 }

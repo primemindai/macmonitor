@@ -1,7 +1,7 @@
 import SwiftUI
 import MonitorCore
 
-/// The orange "why the fan is on" bar, with the readings behind it in an info popover.
+/// The orange fan bar (why the fan is on, or that it is off), with the readings behind it in an info popover.
 struct FanHeadline: View {
     var explanation: FanExplanation?
     var rpm: Double?
@@ -14,7 +14,7 @@ struct FanHeadline: View {
             FanIcon(rpm: rpm, size: compact ? 15 : 18, color: Theme.orange)
                 .frame(width: 22, height: 22)
             VStack(alignment: .leading, spacing: 3) {
-                Text("Why the fan is on")
+                Text(FanExplainer.title(explanation))
                     .font(.system(size: compact ? 11 : 12, weight: .bold))
                     .foregroundStyle(Theme.orange)
                 Text(explanation?.headline ?? "Gathering a minute of readings to explain the fan.")
