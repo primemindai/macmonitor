@@ -4,7 +4,7 @@ import MonitorCore
 
 /// Sidebar pages.
 enum Page: String, CaseIterable, Identifiable, Sendable {
-    case overview, chipMap, heat, cpu, gpu, memory, power, disks, network, apps, events, settings
+    case overview, chipMap, heat, cpu, gpu, memory, power, disks, network, apps, events, settings, connectAI
     var id: String { rawValue }
 
     var title: String {
@@ -21,6 +21,7 @@ enum Page: String, CaseIterable, Identifiable, Sendable {
         case .apps: return "Apps"
         case .events: return "Events"
         case .settings: return "Settings"
+        case .connectAI: return "Connect AI"
         }
     }
 
@@ -38,6 +39,7 @@ enum Page: String, CaseIterable, Identifiable, Sendable {
         case .apps: return "app.badge"
         case .events: return "bell.badge"
         case .settings: return "gearshape"
+        case .connectAI: return "point.3.connected.trianglepath.dotted"
         }
     }
 }
