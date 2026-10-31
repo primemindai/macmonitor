@@ -52,10 +52,9 @@ enum MacMonitorMain {
             // Ask the running one to show its window, then quit. Hand it our turn to come forward first:
             // macOS only lets an app take the front when the app in front hands over.
             if launchedByUser {
-                if let running = NSRunningApplication.runningApplications(withBundleIdentifier: Bundle.main.bundleIdentifier ?? "")
-                    .first(where: { $0 != NSRunningApplication.current }) {
-                    NSApp.yieldActivation(to: running)
-                }
+                NSRunningApplication.runningApplications(withBundleIdentifier: Bundle.main.bundleIdentifier ?? "")
+                    .filter { $0 != NSRunningApplication.current }
+                    .forEach { NSApp.yieldActivation(to: $0) }
                 DistributedNotificationCenter.default().postNotificationName(Self.showNotice, object: nil, userInfo: nil, deliverImmediately: true)
             }
             NSApp.terminate(nil)

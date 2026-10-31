@@ -1,7 +1,7 @@
 import AppKit
 
 /// The menu bar menus macOS shows while the window is open and the app is in the Dock.
-/// In the menu bar only state macOS hides them, but their key shortcuts (Cmd+Q, Cmd+W, Cmd+C) keep working.
+/// In the menu bar only state macOS hides them; their key shortcuts (Cmd+Q, Cmd+W, Cmd+C) still work while the app is active.
 @MainActor enum MainMenu {
     static func make(openSettings: Selector, target: AnyObject) -> NSMenu {
         let bar = NSMenu()
