@@ -187,9 +187,9 @@ These need root (an admin password) or would change hardware, so MacMonitor does
 - **What the checks prove:** the release was signed with the MacMonitor project key. So having access to the GitHub
   repo alone is no longer enough to ship an update. They also catch a cut-off or damaged download, the wrong app or
   version, and changes made after the app was code signed.
-- **What they do not cover:** if the project key itself is stolen, whoever has it can sign an update. And the one
-  update from 1.2.0 to 1.3.0 is checked by 1.2.0, which only checks the SHA-256, so that one step still rests on the
-  GitHub account alone. From 1.3.0 on, every update must carry the signature.
+- **What they do not cover:** if the project key itself is stolen, whoever has it can sign an update. And copies
+  still on 1.2.0 or older only check the SHA-256, so any update they take rests on the GitHub account alone. Once a
+  copy is on 1.3.0, every update must carry the signature.
 - **If macOS blocks the swap:** macOS can stop one app from changing another (System Settings > Privacy & Security >
   App Management). Then MacMonitor keeps the checked new copy in Downloads. Allow MacMonitor there, or drag the new
   copy into Applications by hand.
@@ -203,6 +203,10 @@ These need root (an admin password) or would change hardware, so MacMonitor does
 - **Where the key lives:** the private key is in the release maintainer's login Keychain (a generic password with
   service `macmonitor-release-signing`). It is never in this repo. The public key is built into the app as
   `ReleaseSignature.projectPublicKeyBase64` in `Sources/MonitorCore/Update/ReleaseSignature.swift`.
+- **Ask before each use:** by default the Keychain item lets some tools (such as `/usr/bin/security` and
+  `swift-frontend`) read it with no prompt. To fix that, open Keychain Access, open the item
+  `macmonitor-release-signing`, go to the Access Control tab, choose "Confirm before allowing access" and remove the
+  listed apps. Then every signing asks for the login password.
 - **Made once (2026-10-30):** `swift scripts/release-key.swift new` saves a new key in the Keychain and prints only the public
   key. Put that into `projectPublicKeyBase64`. It refuses if a key already exists. `scripts/release.sh` refuses to run
   while the constant is still the placeholder.
