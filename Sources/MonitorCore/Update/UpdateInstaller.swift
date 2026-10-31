@@ -70,6 +70,9 @@ public struct UpdateInstaller: Sendable {
     public var appVersion: String
     /// The moves of the swap (old app out, new app in, old app back). A seam so tests can make them fail.
     public var swapMove: @Sendable (URL, URL) throws -> Void = { try FileManager.default.moveItem(at: $0, to: $1) }
+    /// The public key a release must be signed with (base64, raw 32 bytes). Internal so only tests can change it;
+    /// the app always uses the key built into it.
+    var releaseKeyBase64: String = ReleaseSignature.projectPublicKeyBase64
 
     public init(fetch: @escaping UpdateFeed.Fetch = UpdateFeed.liveFetch, workRoot: URL? = nil,
                 keepFolder: URL = FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask).first

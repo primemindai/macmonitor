@@ -45,6 +45,8 @@ public struct ReleaseInfo: Equatable, Sendable {
     /// Set only when the asset is on an allowed GitHub host over https.
     public var zipURL: URL?
     public var checksumURL: URL?
+    /// "MacMonitor-<version>.zip.sig": the Ed25519 signature of the zip. Same host rule as the zip.
+    public var signatureURL: URL? = nil
 }
 
 /// Where updates come from and which URLs may be trusted.
@@ -156,6 +158,10 @@ public enum UpdateError: Error, Equatable, Sendable {
     case unzipFailed
     case wrongApp(String)
     case signatureInvalid
+    /// The release has no `.sig` file (the Ed25519 release signature, not the app's code signature).
+    case releaseSignatureMissing
+    /// The `.sig` file is unreadable or was not made with the MacMonitor project key for these exact bytes.
+    case releaseSignatureMismatch
     /// The swap failed and the current version is back in place.
     case swapFailed
     /// The swap failed and the old app could not go back; it was saved at this path instead.
@@ -175,6 +181,10 @@ public enum UpdateError: Error, Equatable, Sendable {
         case .unzipFailed: return "The download could not be unpacked. Nothing was installed."
         case .wrongApp(let why): return "The download is not the expected MacMonitor (\(why)). Nothing was installed."
         case .signatureInvalid: return "The downloaded app failed its code signature check. Nothing was installed."
+        case .releaseSignatureMissing:
+            return "The release has no signature file, so MacMonitor cannot tell who made it. Nothing was installed."
+        case .releaseSignatureMismatch:
+            return "The download is not signed with the MacMonitor project key. Nothing was installed."
         case .swapFailed: return "Could not replace the app. The current version is still in place."
         case .oldAppSaved(let path, nil):
             return "Could not replace the app or put the old one back. Your old MacMonitor is saved at \(path). Drag it into your Applications folder."
