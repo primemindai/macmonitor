@@ -356,8 +356,7 @@ func updateDefaults() -> UserDefaults {
     }
 
     /// Release-signature cases: the zip and checksum are fine, only the `.sig` or the trusted key is wrong.
-    static let signatureCases: Set<String> = ["missing release signature", "release signature from another key",
-                                              "release signature for other bytes", "garbage release signature", "built-in key"]
+    static let signatureCases: Set<String> = ["missing release signature", "garbage release signature", "built-in key"]
 
     /// Every way the download can be wrong leaves the old app exactly as it was, and no temp files.
     @Test(arguments: ["tampered checksum", "missing checksum", "tampered zip", "wrong bundle id", "wrong version", "broken signature",
@@ -373,9 +372,6 @@ func updateDefaults() -> UserDefaults {
         case "missing checksum": rel = try release(withChecksum: false)
         // Anyone who can publish a GitHub release could leave the .sig off, so a missing one must refuse, not skip.
         case "missing release signature": rel = try release(withSignature: false)
-        case "release signature from another key": files[zipURL + ".sig"] = try sign(w.zip, with: Curve25519.Signing.PrivateKey())
-        // A real project signature, but for some other file (say an older release).
-        case "release signature for other bytes": files[zipURL + ".sig"] = try sign(Data("MacMonitor-1.1.0.zip".utf8), with: w.key)
         case "garbage release signature": files[zipURL + ".sig"] = Data("not a signature\n".utf8)
         // The app's own key, the default the app always uses, must refuse a zip signed with any other key.
         case "built-in key": break
@@ -409,12 +405,16 @@ func updateDefaults() -> UserDefaults {
             "wrong bundle id": .wrongApp("different bundle id"), "wrong version": .wrongApp("version does not match the release"),
             "broken signature": .signatureInvalid, "app is a symlink": .wrongApp("no MacMonitor.app inside"),
             "redirect off GitHub": .unsafeURL, "missing release signature": .releaseSignatureMissing,
-            "release signature from another key": .releaseSignatureMismatch, "release signature for other bytes": .releaseSignatureMismatch,
             "garbage release signature": .releaseSignatureMismatch, "built-in key": .releaseSignatureMismatch,
         ]
         let stub = StubFetch(files, landsOn: landsOn)
-        await #expect(throws: want[problem]!) { try await installer(w, stub, builtInKey: problem == "built-in key").run(rel, over: w.current) }
+        let steps = StepLog()
+        await #expect(throws: want[problem]!) {
+            try await installer(w, stub, builtInKey: problem == "built-in key").run(rel, over: w.current, step: { steps.add($0) })
+        }
         if problem.hasPrefix("missing") { #expect(stub.count == 0, "downloaded before refusing: \(problem)") }
+        // Unsigned bytes must never reach ditto: the signature is checked before the zip is written or unpacked.
+        if Self.signatureCases.contains(problem) { #expect(!steps.all.contains(.unpacking), "unpacked before the signature check: \(problem)") }
         #expect(version(of: w.current) == "1.1.0", "old app changed after: \(problem)")
         _ = try run(["/usr/bin/codesign", "--verify", "--deep", "--strict", w.current.path])
         #expect(isEmpty(w.work), "temp files left after: \(problem)")
@@ -455,6 +455,14 @@ func updateDefaults() -> UserDefaults {
         #expect(version(of: kept) == "1.2.0")
         #expect(version(of: w.current) == "1.1.0")
         #expect(isEmpty(w.work))
+    }
+
+    /// Records the installer's steps across threads.
+    final class StepLog: @unchecked Sendable {
+        private let lock = NSLock()
+        private var steps: [UpdateInstaller.Step] = []
+        var all: [UpdateInstaller.Step] { lock.withLock { steps } }
+        func add(_ s: UpdateInstaller.Step) { lock.withLock { steps.append(s) } }
     }
 
     /// Counts the swap's moves across threads.
@@ -519,5 +527,67 @@ func updateDefaults() -> UserDefaults {
             #expect(version(of: w.current) == "1.1.0")
         }
         #expect(isEmpty(w.work), "temp files left after: \(problem)")
+    }
+}
+
+/// The release side of signing: the key release.sh signs against must be the key the app trusts.
+@Suite struct ReleaseSigningScriptTests {
+    let repo = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
+
+    /// Runs a tool and returns its exit code, stdout and stderr.
+    func run(_ exe: String, _ args: [String], env: [String: String] = [:]) throws -> (code: Int32, out: String, err: String) {
+        let p = Process()
+        p.executableURL = URL(fileURLWithPath: exe)
+        p.arguments = args
+        p.currentDirectoryURL = repo
+        p.environment = ProcessInfo.processInfo.environment.merging(env) { $1 }
+        let out = Pipe(), err = Pipe()
+        p.standardOutput = out
+        p.standardError = err
+        try p.run()
+        let o = out.fileHandleForReading.readDataToEndOfFile(), e = err.fileHandleForReading.readDataToEndOfFile()
+        p.waitUntilExit()
+        return (p.terminationStatus, String(decoding: o, as: UTF8.self), String(decoding: e, as: UTF8.self))
+    }
+
+    /// A dead or placeholder key would make every 1.3.0+ copy refuse every update, and the refusal tests would still pass.
+    @Test func builtInKeyIsAUsableKey() {
+        #expect(ReleaseSignature.publicKey(base64: ReleaseSignature.projectPublicKeyBase64) != nil)
+    }
+
+    /// release.sh must read the same key the app trusts, refuse the placeholder, and fail a .sig made with any other key.
+    /// Otherwise a release could ship that every 1.3.0+ copy refuses.
+    @Test func releaseScriptsOnlyAcceptTheAppKey() throws {
+        let tmp = FileManager.default.temporaryDirectory.appendingPathComponent("mm-release-sign-\(UUID().uuidString)")
+        try FileManager.default.createDirectory(at: tmp, withIntermediateDirectories: true, attributes: [.posixPermissions: 0o700])
+        defer { try? FileManager.default.removeItem(at: tmp) }
+        let source = repo.appendingPathComponent("Sources/MonitorCore/Update/ReleaseSignature.swift")
+
+        // The key release.sh reads out of the source is exactly the app's key.
+        let real = try run("/bin/bash", ["scripts/release-pubkey.sh", source.path])
+        #expect(real.code == 0, "release-pubkey.sh failed: \(real.err)")
+        #expect(real.out.trimmingCharacters(in: .whitespacesAndNewlines) == ReleaseSignature.projectPublicKeyBase64)
+
+        // A copy with the placeholder put back is refused.
+        let text = try String(contentsOf: source, encoding: .utf8)
+        let placeholder = text.replacingOccurrences(of: "\"\(ReleaseSignature.projectPublicKeyBase64)\"",
+                                                    with: "\"PLACEHOLDER-SET-BY-THE-RELEASE-KEY-STEP\"")
+        #expect(placeholder != text)
+        let copy = tmp.appendingPathComponent("ReleaseSignature.swift")
+        try placeholder.write(to: copy, atomically: true, encoding: .utf8)
+        #expect(try run("/bin/bash", ["scripts/release-pubkey.sh", copy.path]).code == 1, "placeholder key accepted")
+
+        // A zip signed by a throwaway key file: verify with the app key fails, with the throwaway's own key it passes.
+        let key = Curve25519.Signing.PrivateKey()
+        let keyFile = tmp.appendingPathComponent("throwaway.key")
+        try Data(key.rawRepresentation.base64EncodedString().utf8).write(to: keyFile)
+        let zip = tmp.appendingPathComponent("MacMonitor-9.9.9.zip")
+        try Data((0..<4096).map { UInt8($0 % 251) }).write(to: zip)
+        let signed = try run("/usr/bin/swift", ["scripts/release-key.swift", "sign", zip.path], env: ["MACMONITOR_SIGNING_KEY_FILE": keyFile.path])
+        #expect(signed.code == 0, "sign failed: \(signed.err)")
+        let appKey = try run("/usr/bin/swift", ["scripts/release-key.swift", "verify", zip.path, ReleaseSignature.projectPublicKeyBase64])
+        #expect(appKey.code == 1 && appKey.err.contains("does NOT verify"), "verify with the app key: \(appKey.code) \(appKey.err)")
+        let own = try run("/usr/bin/swift", ["scripts/release-key.swift", "verify", zip.path, key.publicKey.rawRepresentation.base64EncodedString()])
+        #expect(own.code == 0, "verify with the signing key failed: \(own.err)")
     }
 }
