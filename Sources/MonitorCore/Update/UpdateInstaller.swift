@@ -9,6 +9,9 @@ public enum InstallPlace: Equatable, Sendable {
     case notWritable
     /// Not running from a .app bundle (for example a `swift build` binary).
     case notAnApp
+    /// macOS refused the swap (App Management in Privacy & Security can stop one app changing another).
+    /// Never returned by `check`; only found when the move itself is refused.
+    case blocked
 
     public static func check(bundleURL: URL, fileManager: FileManager = .default) -> InstallPlace {
         let path = bundleURL.standardizedFileURL.path
@@ -30,6 +33,8 @@ public enum InstallPlace: Equatable, Sendable {
             return "MacMonitor cannot write to the folder it is in. Quit MacMonitor, then drag the new MacMonitor over the old one."
         case .notAnApp:
             return "This copy is not running from MacMonitor.app, so it cannot replace itself. Use the new MacMonitor.app instead."
+        case .blocked:
+            return "macOS did not let MacMonitor replace itself. Allow MacMonitor under System Settings > Privacy & Security > App Management, or drag the new copy into Applications by hand."
         }
     }
 }
@@ -63,6 +68,8 @@ public struct UpdateInstaller: Sendable {
     public var keepFolder: URL
     /// The running version, for the User-Agent header only.
     public var appVersion: String
+    /// The moves of the swap (old app out, new app in, old app back). A seam so tests can make them fail.
+    public var swapMove: @Sendable (URL, URL) throws -> Void = { try FileManager.default.moveItem(at: $0, to: $1) }
 
     public init(fetch: @escaping UpdateFeed.Fetch = UpdateFeed.liveFetch, workRoot: URL? = nil,
                 keepFolder: URL = FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask).first
@@ -81,8 +88,10 @@ public struct UpdateInstaller: Sendable {
         guard UpdateFeed.isAllowedAssetURL(zipURL), UpdateFeed.isAllowedAssetURL(sumURL) else { throw UpdateError.unsafeURL }
 
         let fm = FileManager.default
-        let work = try makeWorkFolder(near: appURL)
-        defer { try? fm.removeItem(at: work) }
+        let (work, cleanup) = try makeWorkFolder(near: appURL)
+        // Cleared only when the old app could not be saved anywhere else (it is then still in `work`).
+        var removeWork = true
+        defer { if removeWork { try? fm.removeItem(at: cleanup) } }
 
         step(.downloading)
         let zip = try await download(zipURL, timeout: 300)
@@ -108,8 +117,21 @@ public struct UpdateInstaller: Sendable {
         step(.installing)
         let backupDir = work.appendingPathComponent("backup")
         try fm.createDirectory(at: backupDir, withIntermediateDirectories: true)
-        try Self.swap(current: appURL, new: newApp, backup: backupDir.appendingPathComponent(appURL.lastPathComponent),
-                      move: { try fm.moveItem(at: $0, to: $1) })
+        let backup = backupDir.appendingPathComponent(appURL.lastPathComponent)
+        do {
+            try Self.swap(current: appURL, new: newApp, backup: backup, move: swapMove)
+        } catch let f as SwapFailure where !f.restored {
+            // The only copy of the old app is in the temp folder. Save it where the user can find it, before cleanup.
+            let oldVersion = (NSDictionary(contentsOf: backup.appendingPathComponent("Contents/Info.plist"))?["CFBundleShortVersionString"] as? String) ?? "old"
+            if let saved = try? keep(backup, version: oldVersion) { throw UpdateError.oldAppSaved(at: saved.path) }
+            removeWork = false
+            throw UpdateError.oldAppSaved(at: backup.path)
+        } catch let f as SwapFailure {
+            // Old app is back in place. If macOS refused for permission, hand the user the checked new copy instead.
+            guard Self.isPermissionError(f.cause) else { throw UpdateError.swapFailed }
+            let dest = try keep(newApp, version: release.versionText)
+            return .downloadedOnly(dest, .blocked)
+        }
         return .installed(appURL)
     }
 
@@ -123,19 +145,24 @@ public struct UpdateInstaller: Sendable {
         return data
     }
 
-    /// A fresh folder for this run. The default sits on the app's disk so the swap is two renames.
-    private func makeWorkFolder(near appURL: URL) throws -> URL {
+    /// A fresh folder for this run, and the folder to delete afterwards. The default sits on the app's disk
+    /// so the swap is two renames; its NSIRD_ parent was made for this run, so it is deleted too.
+    private func makeWorkFolder(near appURL: URL) throws -> (work: URL, cleanup: URL) {
         let fm = FileManager.default
-        let parent: URL
+        let name = "macmonitor-update-\(UUID().uuidString)"
         if let workRoot {
-            parent = workRoot
-        } else {
-            parent = (try? fm.url(for: .itemReplacementDirectory, in: .userDomainMask, appropriateFor: appURL.deletingLastPathComponent(), create: true))
-                ?? fm.temporaryDirectory
+            let u = workRoot.appendingPathComponent(name)
+            try fm.createDirectory(at: u, withIntermediateDirectories: true)
+            return (u, u)
         }
-        let u = parent.appendingPathComponent("macmonitor-update-\(UUID().uuidString)")
+        if let nsird = try? fm.url(for: .itemReplacementDirectory, in: .userDomainMask, appropriateFor: appURL.deletingLastPathComponent(), create: true) {
+            let u = nsird.appendingPathComponent(name)
+            try fm.createDirectory(at: u, withIntermediateDirectories: true)
+            return (u, nsird)
+        }
+        let u = fm.temporaryDirectory.appendingPathComponent(name)
         try fm.createDirectory(at: u, withIntermediateDirectories: true)
-        return u
+        return (u, u)
     }
 
     /// Moves the verified app to `keepFolder/MacMonitor-<version>/MacMonitor.app` (a free name if that exists).
@@ -165,24 +192,40 @@ public struct UpdateInstaller: Sendable {
         guard tool("/usr/bin/codesign", ["--verify", "--deep", "--strict", app.path]) else { throw UpdateError.signatureInvalid }
     }
 
+    /// Why a swap failed. `restored` false means the old app is only at the backup path.
+    struct SwapFailure: Error {
+        var restored: Bool
+        var cause: Error
+    }
+
     /// Old app to the backup, new app to the old path, then drop the backup.
     /// If the new app cannot be moved in, the backup goes back, so the user is never left with no app.
-    public static func swap(current: URL, new: URL, backup: URL, move: (URL, URL) throws -> Void) throws {
-        do { try move(current, backup) } catch { throw UpdateError.swapFailed(restored: true) }
+    static func swap(current: URL, new: URL, backup: URL, move: (URL, URL) throws -> Void) throws {
+        do { try move(current, backup) } catch { throw SwapFailure(restored: true, cause: error) }
         do {
             try move(new, current)
         } catch {
             let restored = (try? move(backup, current)) != nil
-            throw UpdateError.swapFailed(restored: restored)
+            throw SwapFailure(restored: restored, cause: error)
         }
         try? FileManager.default.removeItem(at: backup)
     }
 
+    /// EPERM, EACCES or Cocoa's "no write permission", also when wrapped as the underlying error.
+    static func isPermissionError(_ error: Error) -> Bool {
+        let e = error as NSError
+        if e.domain == NSCocoaErrorDomain, e.code == NSFileWriteNoPermissionError { return true }
+        if e.domain == NSPOSIXErrorDomain, e.code == Int(EPERM) || e.code == Int(EACCES) { return true }
+        if let under = e.userInfo[NSUnderlyingErrorKey] as? Error { return isPermissionError(under) }
+        return false
+    }
+
     /// `/bin/sh` arguments that wait for this process to quit, then open the app at `appPath`.
     /// The pid and path are passed as arguments, never pasted into the script, so no path needs quoting.
-    public static func relaunchArguments(pid: Int32, appPath: String) -> [String] {
-        ["-c", #"i=0; while kill -0 "$1" 2>/dev/null && [ $i -lt 100 ]; do sleep 0.2; i=$((i+1)); done; exec /usr/bin/open "$2""#,
-         "macmonitor-relaunch", String(pid), appPath]
+    /// `opener` is a seam for tests; the app always uses /usr/bin/open.
+    public static func relaunchArguments(pid: Int32, appPath: String, opener: String = "/usr/bin/open") -> [String] {
+        ["-c", #"i=0; while kill -0 "$1" 2>/dev/null && [ $i -lt 100 ]; do sleep 0.2; i=$((i+1)); done; exec "$3" "$2""#,
+         "macmonitor-relaunch", String(pid), appPath, opener]
     }
 
     /// Runs a system tool and waits. True when it exits 0.

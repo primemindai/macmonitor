@@ -156,7 +156,10 @@ public enum UpdateError: Error, Equatable, Sendable {
     case unzipFailed
     case wrongApp(String)
     case signatureInvalid
-    case swapFailed(restored: Bool)
+    /// The swap failed and the current version is back in place.
+    case swapFailed
+    /// The swap failed and the old app could not go back; it was saved at this path instead.
+    case oldAppSaved(at: String)
 
     public var message: String {
         switch self {
@@ -169,9 +172,9 @@ public enum UpdateError: Error, Equatable, Sendable {
         case .unzipFailed: return "The download could not be unpacked. Nothing was installed."
         case .wrongApp(let why): return "The download is not the expected MacMonitor (\(why)). Nothing was installed."
         case .signatureInvalid: return "The downloaded app failed its code signature check. Nothing was installed."
-        case .swapFailed(let restored):
-            return restored ? "Could not replace the app. The current version was put back."
-                            : "Could not replace the app, and the current version could not be put back. Use Download to install it again."
+        case .swapFailed: return "Could not replace the app. The current version is still in place."
+        case .oldAppSaved(let path):
+            return "Could not replace the app or put the old one back. Your old MacMonitor is saved at \(path). Drag it into your Applications folder."
         }
     }
 }
@@ -241,13 +244,15 @@ public struct UpdateChecker: Sendable {
     /// "Check now": asks right away. A build with no version (a plain `swift build`) never asks.
     public func checkNow() async -> Result {
         guard let currentVersion, let current = AppVersion(currentVersion) else { return .skipped }
-        settings.lastCheck = now()
         do {
             let (data, resp) = try await fetch(UpdateFeed.request(UpdateFeed.latestURL, appVersion: currentVersion))
             guard let http = resp as? HTTPURLResponse, http.statusCode == 200 else {
                 return .failed(UpdateError.http((resp as? HTTPURLResponse)?.statusCode ?? 0).message)
             }
             guard let release = UpdateFeed.parse(data) else { return .failed("GitHub's answer had no version MacMonitor can read.") }
+            // Stamped only on a good answer: a check that fails (say at login, before Wi-Fi is up) is retried
+            // on the next hourly wake instead of waiting a whole day.
+            settings.lastCheck = now()
             return release.version > current ? .available(release) : .upToDate(latest: release.version)
         } catch {
             return .failed(UpdateError.network(error.localizedDescription).message)

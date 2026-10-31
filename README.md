@@ -180,7 +180,14 @@ These need root (an admin password) or would change hardware, so MacMonitor does
   when you click it.
 - **Update now** downloads `MacMonitor-<version>.zip` and its `.sha256` from GitHub over https. It installs only when the
   SHA-256 matches, the app inside is MacMonitor with the right version, and its code signature checks out.
-  Then it swaps the app in place and opens the new copy. If the swap fails, the old app is put back.
+  Then it swaps the app in place and opens the new copy. If the swap fails, the old app is put back
+  (if even that fails, the old app is saved in Downloads and the message says where).
+- **What the checks prove:** they catch a cut-off or damaged download, a file swapped only on the download server,
+  the wrong app or version, and changes made after signing. They do not prove who made the release: anyone who can
+  publish a release on this GitHub repo could ship an update.
+- **If macOS blocks the swap:** macOS can stop one app from changing another (System Settings > Privacy & Security >
+  App Management). Then MacMonitor keeps the checked new copy in Downloads. Allow MacMonitor there, or drag the new
+  copy into Applications by hand.
 - **When it cannot install in place:** if macOS runs MacMonitor from a temporary copy (it was opened straight from the
   zip or the Downloads folder), or the app's folder is not writable, it does not replace anything. It puts the
   checked new copy in your Downloads folder and shows it in Finder, so you can drag it into Applications.

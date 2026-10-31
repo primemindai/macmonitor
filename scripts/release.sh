@@ -1,6 +1,6 @@
 #!/bin/bash
 # Builds a release MacMonitor.app (Apple Silicon), ad-hoc signs it and zips it for a GitHub Release.
-# Usage: scripts/release.sh <version>    e.g. scripts/release.sh 1.0.0
+# Usage: scripts/release.sh <version>    (the version without a "v", for example the one in Resources/Info.plist)
 # Output: .build/release-zip/MacMonitor-<version>.zip and MacMonitor-<version>.zip.sha256. Does not install anything.
 # Upload both to the GitHub release: the app's "Update now" refuses a release without the .sha256.
 set -euo pipefail

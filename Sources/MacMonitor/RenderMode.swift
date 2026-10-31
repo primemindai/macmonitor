@@ -50,7 +50,9 @@ import MonitorCore
                     .environment(\.colorScheme, scheme)
                     .frame(width: 1220)
                     .frame(minHeight: 820)
-                save(view, name: "\(String(format: "%02d", Page.allCases.firstIndex(of: page)! + 1))-\(page.rawValue)-\(tag)")
+                // 13 and 14 belong to the menu bar shots below, so later pages (Connect AI, Updates) start at 15.
+                let i = Page.allCases.firstIndex(of: page)!
+                save(view, name: "\(String(format: "%02d", i < 12 ? i + 1 : i + 3))-\(page.rawValue)-\(tag)")
             }
             let pop = MenuBarPopover(openWindow: {}, quit: {})
                 .environmentObject(model)

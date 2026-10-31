@@ -12,6 +12,8 @@ import MonitorCore
         /// Verified but not installed in place: the new app is at this path, and why.
         case kept(URL, InstallPlace)
         case relaunching
+        /// The new version is in place; only opening it again failed.
+        case installedNeedsRestart
     }
 
     /// The newer release, or nil. This is what shows the sidebar badge.
@@ -113,7 +115,7 @@ import MonitorCore
         p.standardOutput = FileHandle.nullDevice
         p.standardError = FileHandle.nullDevice
         do { try p.run() } catch {
-            install = .failed("The new version is installed. Quit and open MacMonitor again to use it.")
+            install = .installedNeedsRestart
             return
         }
         NSApp.terminate(nil)
@@ -195,14 +197,14 @@ private struct UpdatesContent: View {
                     Text("You have the newest version (\(updates.currentVersion ?? "unknown")).").font(.system(size: 13))
                 }
             }
-            Text("Update now downloads the release from GitHub, checks its SHA-256 checksum and code signature, then replaces this copy and opens it again. If any check fails, nothing is installed.")
+            Text("Update now downloads the release from GitHub and checks it before it replaces this copy. The checks catch a cut-off or damaged download, a file swapped only on the download server, the wrong app or version, and changes made after signing. They do not prove who made the release: anyone who can publish a release on the MacMonitor GitHub repo could ship an update.")
                 .font(.system(size: 11)).foregroundStyle(theme.mut).fixedSize(horizontal: false, vertical: true)
         }
     }
 
     private var isBusy: Bool {
         switch updates.install {
-        case .running, .relaunching: return true
+        case .running, .relaunching, .installedNeedsRestart: return true
         default: return false
         }
     }
@@ -218,6 +220,9 @@ private struct UpdatesContent: View {
             }
         case .relaunching:
             Text("Installed. Opening the new version...").font(.system(size: 12, weight: .semibold)).foregroundStyle(Theme.good)
+        case .installedNeedsRestart:
+            Label("The new version is installed. Quit MacMonitor and open it again to use it.", systemImage: "checkmark.circle.fill")
+                .font(.system(size: 12, weight: .semibold)).foregroundStyle(Theme.good).fixedSize(horizontal: false, vertical: true)
         case .failed(let why):
             Label(why + " Use Download to get it from GitHub.", systemImage: "xmark.octagon.fill")
                 .font(.system(size: 12)).foregroundStyle(Theme.bad).fixedSize(horizontal: false, vertical: true)

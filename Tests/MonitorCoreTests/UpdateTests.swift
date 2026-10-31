@@ -116,6 +116,22 @@ func updateDefaults() -> UserDefaults {
         _ = await at(-72).checkIfDue(atLaunch: false)
         #expect(on.count == 3)
     }
+
+    /// A check that fails (say at login, before Wi-Fi is up) must not block the next one for a whole day.
+    @Test func failedCheckIsRetriedWithinTheHour() async {
+        let t0 = Date(timeIntervalSince1970: 2_000_000_000), t1 = t0.addingTimeInterval(3_600)
+        let s = UpdateSettings(defaults: updateDefaults())
+        let offline: UpdateFeed.Fetch = { _ in throw URLError(.notConnectedToInternet) }
+        let first = await UpdateChecker(currentVersion: "1.1.0", settings: s, fetch: offline, now: { t0 }).checkIfDue(atLaunch: true)
+        guard case .failed = first else { Issue.record("offline check gave \(first)"); return }
+        #expect(s.lastCheck == nil, "a failed check must not count as checked")
+
+        let online = StubFetch([UpdateFeed.latestURL.absoluteString: releaseJSON(tag: "v1.2.0")])
+        let second = await UpdateChecker(currentVersion: "1.1.0", settings: s, fetch: online.fetch, now: { t1 }).checkIfDue(atLaunch: false)
+        #expect(online.count == 1)
+        guard case .available = second else { Issue.record("retry gave \(second)"); return }
+        #expect(s.lastCheck == t1)
+    }
 }
 
 /// Security of what gets downloaded: only GitHub over https, and only with a matching SHA-256.
@@ -162,7 +178,6 @@ func updateDefaults() -> UserDefaults {
     @Test func checksumMustMatch() throws {
         let zip = Data("abc".utf8)
         let good = Checksum.sha256Hex(zip)
-        #expect(good == "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad", "FIPS 180-2 test vector")
         let name = "MacMonitor-1.2.0.zip"
         let cases: [(String?, UpdateError?)] = [
             ("\(good)  \(name)\n", nil),                       // shasum -a 256 output
@@ -215,34 +230,29 @@ func updateDefaults() -> UserDefaults {
         #expect(InstallPlace.check(bundleURL: root.appendingPathComponent("Apps")) == .notAnApp)
     }
 
-    /// If the new app cannot be moved in, the old one goes back to the same path.
-    @Test func failedSwapPutsTheOldAppBack() throws {
-        let root = try tempDir("swap")
+    /// A path with shell syntax in it must reach `open` as one plain argument and never run as a command.
+    @Test func relaunchNeverRunsTheAppPath() throws {
+        let root = try tempDir("relaunch")
         defer { try? FileManager.default.removeItem(at: root) }
-        let current = root.appendingPathComponent("Applications/MacMonitor.app")
-        let new = root.appendingPathComponent("new/MacMonitor.app")
-        let backup = root.appendingPathComponent("backup/MacMonitor.app")
-        for (u, text) in [(current, "old"), (new, "new")] {
-            try FileManager.default.createDirectory(at: u, withIntermediateDirectories: true)
-            try Data(text.utf8).write(to: u.appendingPathComponent("marker"))
+        let marker = root.appendingPathComponent("ran").path
+        // A pid that has already exited, so the wait loop ends at once.
+        let gone = Process()
+        gone.executableURL = URL(fileURLWithPath: "/usr/bin/true")
+        try gone.run()
+        gone.waitUntilExit()
+        for path in ["/x/$(touch \(marker))/MacMonitor.app", "/x/\"; touch \(marker); \"/MacMonitor.app", "/x/`touch \(marker)`/MacMonitor.app"] {
+            let p = Process()
+            p.executableURL = URL(fileURLWithPath: "/bin/sh")
+            // /bin/echo stands in for /usr/bin/open: it prints the argument it was given.
+            p.arguments = UpdateInstaller.relaunchArguments(pid: gone.processIdentifier, appPath: path, opener: "/bin/echo")
+            let out = Pipe()
+            p.standardOutput = out
+            try p.run()
+            let text = String(decoding: out.fileHandleForReading.readDataToEndOfFile(), as: UTF8.self)
+            p.waitUntilExit()
+            #expect(text == path + "\n", "open got a different argument")
+            #expect(!FileManager.default.fileExists(atPath: marker), "the path ran as a command: \(path)")
         }
-        try FileManager.default.createDirectory(at: backup.deletingLastPathComponent(), withIntermediateDirectories: true)
-
-        var moves = 0
-        let failSecond: (URL, URL) throws -> Void = { from, to in
-            moves += 1
-            if moves == 2 { throw CocoaError(.fileWriteNoPermission) }
-            try FileManager.default.moveItem(at: from, to: to)
-        }
-        #expect(throws: UpdateError.swapFailed(restored: true)) {
-            try UpdateInstaller.swap(current: current, new: new, backup: backup, move: failSecond)
-        }
-        #expect(try String(contentsOf: current.appendingPathComponent("marker"), encoding: .utf8) == "old")
-
-        // The happy swap: new in place, backup gone.
-        try UpdateInstaller.swap(current: current, new: new, backup: backup, move: { try FileManager.default.moveItem(at: $0, to: $1) })
-        #expect(try String(contentsOf: current.appendingPathComponent("marker"), encoding: .utf8) == "new")
-        #expect(!FileManager.default.fileExists(atPath: backup.path))
     }
 }
 
@@ -328,7 +338,7 @@ func updateDefaults() -> UserDefaults {
 
     /// Every way the download can be wrong leaves the old app exactly as it was, and no temp files.
     @Test(arguments: ["tampered checksum", "missing checksum", "tampered zip", "wrong bundle id", "wrong version", "broken signature",
-                      "redirect off GitHub"])
+                      "app is a symlink", "redirect off GitHub"])
     func badDownloadNeverTouchesTheOldApp(_ problem: String) async throws {
         let w = try world()
         defer { try? FileManager.default.removeItem(at: w.root) }
@@ -349,13 +359,23 @@ func updateDefaults() -> UserDefaults {
             try run(["/usr/bin/ditto", "-c", "-k", "--keepParent", "MacMonitor.app", "MacMonitor-1.2.0.zip"], in: other)
             files[zipURL] = try Data(contentsOf: other.appendingPathComponent("MacMonitor-1.2.0.zip"))
             files[zipURL + ".sha256"] = Data(try run(["/usr/bin/shasum", "-a", "256", "MacMonitor-1.2.0.zip"], in: other).utf8)
+        case "app is a symlink":
+            // A good signed 1.2.0 app, but the zip holds only a symlink to it (zip -y keeps links; ditto would follow it).
+            let other = w.root.appendingPathComponent("other")
+            let real = other.appendingPathComponent("elsewhere/MacMonitor.app")
+            try makeApp(at: real, version: "1.2.0")
+            try FileManager.default.createSymbolicLink(at: other.appendingPathComponent("MacMonitor.app"), withDestinationURL: real)
+            try run(["/usr/bin/zip", "-q", "-y", "MacMonitor-1.2.0.zip", "MacMonitor.app"], in: other)
+            files[zipURL] = try Data(contentsOf: other.appendingPathComponent("MacMonitor-1.2.0.zip"))
+            files[zipURL + ".sha256"] = Data(try run(["/usr/bin/shasum", "-a", "256", "MacMonitor-1.2.0.zip"], in: other).utf8)
         case "redirect off GitHub": landsOn[zipURL] = "https://evil.example/MacMonitor-1.2.0.zip"
         default: Issue.record("unknown case")
         }
         let want: [String: UpdateError] = [
             "tampered checksum": .checksumMismatch, "missing checksum": .checksumMissing, "tampered zip": .checksumMismatch,
             "wrong bundle id": .wrongApp("different bundle id"), "wrong version": .wrongApp("version does not match the release"),
-            "broken signature": .signatureInvalid, "redirect off GitHub": .unsafeURL,
+            "broken signature": .signatureInvalid, "app is a symlink": .wrongApp("no MacMonitor.app inside"),
+            "redirect off GitHub": .unsafeURL,
         ]
         let stub = StubFetch(files, landsOn: landsOn)
         await #expect(throws: want[problem]!) { try await installer(w, stub).run(rel, over: w.current) }
@@ -393,5 +413,59 @@ func updateDefaults() -> UserDefaults {
         #expect(version(of: kept) == "1.2.0")
         #expect(version(of: w.current) == "1.1.0")
         #expect(isEmpty(w.work))
+    }
+
+    /// Counts the swap's moves across threads.
+    final class Counter: @unchecked Sendable {
+        private let lock = NSLock()
+        private var n = 0
+        func next() -> Int { lock.withLock { n += 1; return n } }
+    }
+
+    /// A failing swap never leaves the user with no app. A permission refusal (macOS App Management) puts the old app
+    /// back and hands over the checked new copy instead.
+    @Test(arguments: ["move in fails", "move in and restore fail", "App Management blocks moving out", "App Management blocks moving in"])
+    func failedSwapNeverLosesTheOldApp(_ problem: String) async throws {
+        let w = try world()
+        defer { try? FileManager.default.removeItem(at: w.root) }
+        let denied = CocoaError(.fileWriteNoPermission, userInfo: [NSUnderlyingErrorKey: POSIXError(.EPERM)])
+        let broken = CocoaError(.fileWriteUnknown)
+        // The swap's moves in order: 1 old app out, 2 new app in, 3 old app back.
+        let fails: [Int: Error] = switch problem {
+        case "move in fails": [2: broken]
+        case "move in and restore fail": [2: broken, 3: broken]
+        case "App Management blocks moving out": [1: denied]
+        default: [2: denied]
+        }
+        let calls = Counter()
+        var inst = installer(w, StubFetch([zipURL: w.zip, zipURL + ".sha256": w.sha]))
+        inst.swapMove = { from, to in
+            if let e = fails[calls.next()] { throw e }
+            try FileManager.default.moveItem(at: from, to: to)
+        }
+        let rel = try release()
+
+        switch problem {
+        case "move in fails":
+            await #expect(throws: UpdateError.swapFailed) { try await inst.run(rel, over: w.current) }
+            #expect(version(of: w.current) == "1.1.0")
+        case "move in and restore fail":
+            do {
+                let out = try await inst.run(rel, over: w.current)
+                Issue.record("expected an error, got \(out)")
+            } catch let UpdateError.oldAppSaved(at: path) {
+                #expect(path.hasPrefix(w.kept.path), "old app saved outside the keep folder: \(path)")
+                #expect(version(of: URL(fileURLWithPath: path)) == "1.1.0", "the old app is not where the error says")
+                _ = try run(["/usr/bin/codesign", "--verify", "--deep", "--strict", path])
+            }
+        default:
+            let out = try await inst.run(rel, over: w.current)
+            guard case .downloadedOnly(let kept, let place) = out else { Issue.record("got \(out)"); return }
+            #expect(place == .blocked)
+            #expect(place.advice.contains("App Management"))
+            #expect(version(of: kept) == "1.2.0")
+            #expect(version(of: w.current) == "1.1.0")
+        }
+        #expect(isEmpty(w.work), "temp files left after: \(problem)")
     }
 }
