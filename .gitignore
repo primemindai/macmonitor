@@ -15,3 +15,7 @@ research/proc_rusage
 research/proc_taskinfo_test
 research/smc_dump
 research/sys_probe
+# Release signing keys never belong in the repo (see README, Release signing).
+*.key
+*.pem
+*signing-key*
