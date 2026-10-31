@@ -24,16 +24,15 @@ final class StubFetch: @unchecked Sendable {
 
     init(_ files: [String: Data] = [:], landsOn: [String: String] = [:]) { self.files = files; self.landsOn = landsOn }
 
-    var count: Int { lock.lock(); defer { lock.unlock() }; return requests.count }
+    var count: Int { lock.withLock { requests.count } }
 
     var fetch: UpdateFeed.Fetch {
         { [self] req in
             let key = req.url!.absoluteString
-            lock.lock()
-            requests.append(req)
-            let data = files[key]
-            let final = landsOn[key].flatMap(URL.init(string:)) ?? req.url!
-            lock.unlock()
+            let (data, final) = lock.withLock {
+                requests.append(req)
+                return (files[key], landsOn[key].flatMap(URL.init(string:)) ?? req.url!)
+            }
             let resp = HTTPURLResponse(url: final, statusCode: data == nil ? 404 : 200, httpVersion: "HTTP/1.1", headerFields: nil)!
             return (data ?? Data(), resp)
         }
@@ -78,7 +77,8 @@ func updateDefaults() -> UserDefaults {
         #expect(req.httpBody == nil)
         #expect(req.url == UpdateFeed.latestURL)
         #expect(req.value(forHTTPHeaderField: "User-Agent") == "MacMonitor/1.1.0")
-        #expect(Set(req.allHTTPHeaderFields?.keys.map { $0.lowercased() } ?? []).isSubset(of: ["user-agent", "accept-language"]))
+        let headers = Set((req.allHTTPHeaderFields ?? [:]).keys.map { $0.lowercased() })
+        #expect(headers.isSubset(of: ["user-agent", "accept-language"]), "extra headers: \(headers)")
     }
 
     /// Off means no network call at all, at launch or later; on is the default; on checks at most once a day.
@@ -92,28 +92,28 @@ func updateDefaults() -> UserDefaults {
         s.enabled = false
         let off = StubFetch([UpdateFeed.latestURL.absoluteString: releaseJSON(tag: "v9.0.0")])
         let cOff = UpdateChecker(currentVersion: "1.1.0", settings: s, fetch: off.fetch, now: { t0 })
-        #expect(await cOff.checkIfDue(atLaunch: true) == .skipped)
-        #expect(await cOff.checkIfDue(atLaunch: false) == .skipped)
+        let launch = await cOff.checkIfDue(atLaunch: true), later = await cOff.checkIfDue(atLaunch: false)
+        #expect(launch == .skipped && later == .skipped)
         #expect(off.count == 0)
         #expect(UpdateSettings(defaults: d).enabled == false, "the off switch is stored")
 
         // On: launch checks, then nothing more until 24 hours have passed.
         s.enabled = true
-        var now = t0
         let on = StubFetch([UpdateFeed.latestURL.absoluteString: releaseJSON(tag: "v9.0.0")])
-        let cOn = UpdateChecker(currentVersion: "1.1.0", settings: s, fetch: on.fetch, now: { [now] in now })
-        _ = await cOn.checkIfDue(atLaunch: true)
+        func at(_ hours: Double) -> UpdateChecker {
+            let t = t0.addingTimeInterval(hours * 3_600)
+            return UpdateChecker(currentVersion: "1.1.0", settings: s, fetch: on.fetch, now: { t })
+        }
+        _ = await at(0).checkIfDue(atLaunch: true)
         #expect(on.count == 1)
         #expect(UpdateSettings(defaults: d).lastCheck == t0, "last check time is stored")
-        now = t0.addingTimeInterval(23 * 3_600)
-        #expect(await UpdateChecker(currentVersion: "1.1.0", settings: s, fetch: on.fetch, now: { [now] in now }).checkIfDue(atLaunch: false) == .skipped)
+        let early = await at(23).checkIfDue(atLaunch: false)
+        #expect(early == .skipped)
         #expect(on.count == 1)
-        now = t0.addingTimeInterval(24 * 3_600)
-        _ = await UpdateChecker(currentVersion: "1.1.0", settings: s, fetch: on.fetch, now: { [now] in now }).checkIfDue(atLaunch: false)
+        _ = await at(24).checkIfDue(atLaunch: false)
         #expect(on.count == 2)
-        // A clock set back must not stop checks forever.
-        now = t0.addingTimeInterval(-3 * 86_400)
-        _ = await UpdateChecker(currentVersion: "1.1.0", settings: s, fetch: on.fetch, now: { [now] in now }).checkIfDue(atLaunch: false)
+        // A clock set back days must not stop checks until it catches up.
+        _ = await at(-72).checkIfDue(atLaunch: false)
         #expect(on.count == 3)
     }
 }
@@ -327,7 +327,8 @@ func updateDefaults() -> UserDefaults {
     }
 
     /// Every way the download can be wrong leaves the old app exactly as it was, and no temp files.
-    @Test(arguments: ["tampered checksum", "missing checksum", "tampered zip", "wrong bundle id", "wrong version", "redirect off GitHub"])
+    @Test(arguments: ["tampered checksum", "missing checksum", "tampered zip", "wrong bundle id", "wrong version", "broken signature",
+                      "redirect off GitHub"])
     func badDownloadNeverTouchesTheOldApp(_ problem: String) async throws {
         let w = try world()
         defer { try? FileManager.default.removeItem(at: w.root) }
@@ -338,18 +339,26 @@ func updateDefaults() -> UserDefaults {
         case "tampered checksum": files[zipURL + ".sha256"] = Data((String(repeating: "a", count: 64) + "  MacMonitor-1.2.0.zip\n").utf8)
         case "missing checksum": rel = try release(withChecksum: false)
         case "tampered zip": var z = w.zip; z[z.count / 2] ^= 0xFF; files[zipURL] = z
-        case "wrong bundle id", "wrong version":
+        case "wrong bundle id", "wrong version", "broken signature":
+            // A matching checksum, but the app inside is not one we may install.
             let other = w.root.appendingPathComponent("other")
-            try makeApp(at: other.appendingPathComponent("MacMonitor.app"), version: problem == "wrong version" ? "1.1.5" : "1.2.0",
+            let app = other.appendingPathComponent("MacMonitor.app")
+            try makeApp(at: app, version: problem == "wrong version" ? "1.1.5" : "1.2.0",
                         bundleID: problem == "wrong bundle id" ? "com.example.other" : "com.macmonitor.app")
+            if problem == "broken signature" { try Data("added after signing".utf8).write(to: app.appendingPathComponent("Contents/MacOS/extra")) }
             try run(["/usr/bin/ditto", "-c", "-k", "--keepParent", "MacMonitor.app", "MacMonitor-1.2.0.zip"], in: other)
             files[zipURL] = try Data(contentsOf: other.appendingPathComponent("MacMonitor-1.2.0.zip"))
             files[zipURL + ".sha256"] = Data(try run(["/usr/bin/shasum", "-a", "256", "MacMonitor-1.2.0.zip"], in: other).utf8)
         case "redirect off GitHub": landsOn[zipURL] = "https://evil.example/MacMonitor-1.2.0.zip"
         default: Issue.record("unknown case")
         }
+        let want: [String: UpdateError] = [
+            "tampered checksum": .checksumMismatch, "missing checksum": .checksumMissing, "tampered zip": .checksumMismatch,
+            "wrong bundle id": .wrongApp("different bundle id"), "wrong version": .wrongApp("version does not match the release"),
+            "broken signature": .signatureInvalid, "redirect off GitHub": .unsafeURL,
+        ]
         let stub = StubFetch(files, landsOn: landsOn)
-        await #expect(throws: UpdateError.self) { try await installer(w, stub).run(rel, over: w.current) }
+        await #expect(throws: want[problem]!) { try await installer(w, stub).run(rel, over: w.current) }
         #expect(version(of: w.current) == "1.1.0", "old app changed after: \(problem)")
         _ = try run(["/usr/bin/codesign", "--verify", "--deep", "--strict", w.current.path])
         #expect(isEmpty(w.work), "temp files left after: \(problem)")
@@ -363,7 +372,7 @@ func updateDefaults() -> UserDefaults {
         var rel = try release()
         rel.zipURL = URL(string: "http://github.com/primemindai/macmonitor/releases/download/v1.2.0/MacMonitor-1.2.0.zip")
         let stub = StubFetch()
-        await #expect(throws: UpdateError.self) { try await installer(w, stub).run(rel, over: w.current) }
+        await #expect(throws: UpdateError.unsafeURL) { try await installer(w, stub).run(rel, over: w.current) }
         #expect(stub.count == 0)
         #expect(version(of: w.current) == "1.1.0")
     }
