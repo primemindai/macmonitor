@@ -39,11 +39,12 @@ public enum InstallPlace: Equatable, Sendable {
     }
 }
 
-/// "Update now": download the release zip and its checksum, verify, unpack, check the app, swap it in.
+/// "Update now": download the release zip, its checksum and its signature, verify, unpack, check the app, swap it in.
 ///
 /// The app downloads these files itself, so macOS puts no quarantine flag on them and the new copy opens
 /// with no Gatekeeper prompt. That is why every step here refuses anything it cannot prove: a GitHub https
-/// URL, a matching SHA-256, our bundle id and version, and a valid code signature.
+/// URL, a matching SHA-256, an Ed25519 signature by the MacMonitor project key, our bundle id and version,
+/// and a valid code signature.
 public struct UpdateInstaller: Sendable {
     public enum Step: String, Sendable {
         case downloading = "Downloading..."
@@ -88,7 +89,13 @@ public struct UpdateInstaller: Sendable {
     public func run(_ release: ReleaseInfo, over appURL: URL, step: @escaping @Sendable (Step) -> Void = { _ in }) async throws -> Outcome {
         guard let zipURL = release.zipURL else { throw UpdateError.noDownload }
         guard let sumURL = release.checksumURL else { throw UpdateError.checksumMissing }
-        guard UpdateFeed.isAllowedAssetURL(zipURL), UpdateFeed.isAllowedAssetURL(sumURL) else { throw UpdateError.unsafeURL }
+        /// Rollout rule: from 1.3.0 on, a release with no `.sig` is refused outright. A soft "skip if missing" would let
+        /// anyone who can publish a GitHub release just leave it off. 1.2.0 ignores the `.sig` and updates to the first
+        /// signed release (1.3.0) with the SHA-256 checks only; every release after that is signed by scripts/release.sh.
+        guard let sigURL = release.signatureURL else { throw UpdateError.releaseSignatureMissing }
+        guard UpdateFeed.isAllowedAssetURL(zipURL), UpdateFeed.isAllowedAssetURL(sumURL), UpdateFeed.isAllowedAssetURL(sigURL) else {
+            throw UpdateError.unsafeURL
+        }
 
         let fm = FileManager.default
         let (work, cleanup) = try makeWorkFolder(near: appURL)
@@ -99,9 +106,12 @@ public struct UpdateInstaller: Sendable {
         step(.downloading)
         let zip = try await download(zipURL, timeout: 300)
         let sum = try await download(sumURL, timeout: 30)
+        let sig = try await download(sigURL, timeout: 30)
 
         step(.verifying)
         try Checksum.verify(zip, shasum: String(data: sum, encoding: .utf8), fileName: release.zipName)
+        // Checked on the bytes in memory, before the zip is written to disk or unpacked.
+        try ReleaseSignature.verify(zip, sigFile: sig, publicKeyBase64: releaseKeyBase64)
 
         step(.unpacking)
         let zipFile = work.appendingPathComponent(release.zipName)

@@ -46,7 +46,7 @@ public struct ReleaseInfo: Equatable, Sendable {
     public var zipURL: URL?
     public var checksumURL: URL?
     /// "MacMonitor-<version>.zip.sig": the Ed25519 signature of the zip. Same host rule as the zip.
-    public var signatureURL: URL? = nil
+    public var signatureURL: URL?
 }
 
 /// Where updates come from and which URLs may be trusted.
@@ -99,7 +99,8 @@ public enum UpdateFeed {
             pageURL: page.flatMap { $0.scheme == "https" && $0.host?.lowercased() == "github.com" ? $0 : nil } ?? releasesPage,
             zipName: zipName,
             zipURL: assets[zipName].flatMap { isAllowedAssetURL($0) ? $0 : nil },
-            checksumURL: assets[zipName + ".sha256"].flatMap { isAllowedAssetURL($0) ? $0 : nil })
+            checksumURL: assets[zipName + ".sha256"].flatMap { isAllowedAssetURL($0) ? $0 : nil },
+            signatureURL: assets[zipName + ".sig"].flatMap { isAllowedAssetURL($0) ? $0 : nil })
     }
 
     /// URLSession with no cookies or cache, which refuses any redirect off GitHub.
