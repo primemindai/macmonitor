@@ -424,7 +424,8 @@ func updateDefaults() -> UserDefaults {
 
     /// A failing swap never leaves the user with no app. A permission refusal (macOS App Management) puts the old app
     /// back and hands over the checked new copy instead.
-    @Test(arguments: ["move in fails", "move in and restore fail", "App Management blocks moving out", "App Management blocks moving in"])
+    @Test(arguments: ["move in fails", "move in and restore fail", "App Management blocks moving out", "App Management blocks moving in",
+                      "App Management blocks moving in and back"])
     func failedSwapNeverLosesTheOldApp(_ problem: String) async throws {
         let w = try world()
         defer { try? FileManager.default.removeItem(at: w.root) }
@@ -435,6 +436,7 @@ func updateDefaults() -> UserDefaults {
         case "move in fails": [2: broken]
         case "move in and restore fail": [2: broken, 3: broken]
         case "App Management blocks moving out": [1: denied]
+        case "App Management blocks moving in and back": [2: denied, 3: denied]
         default: [2: denied]
         }
         let calls = Counter()
@@ -449,14 +451,22 @@ func updateDefaults() -> UserDefaults {
         case "move in fails":
             await #expect(throws: UpdateError.swapFailed) { try await inst.run(rel, over: w.current) }
             #expect(version(of: w.current) == "1.1.0")
-        case "move in and restore fail":
+        case "move in and restore fail", "App Management blocks moving in and back":
+            let blocked = problem.hasPrefix("App Management")
             do {
                 let out = try await inst.run(rel, over: w.current)
                 Issue.record("expected an error, got \(out)")
-            } catch let UpdateError.oldAppSaved(at: path) {
+            } catch let UpdateError.oldAppSaved(at: path, newCopy: newCopy) {
                 #expect(path.hasPrefix(w.kept.path), "old app saved outside the keep folder: \(path)")
                 #expect(version(of: URL(fileURLWithPath: path)) == "1.1.0", "the old app is not where the error says")
                 _ = try run(["/usr/bin/codesign", "--verify", "--deep", "--strict", path])
+                // Refused for permission: the checked new copy must survive too, and the message must say how to allow it.
+                #expect((newCopy != nil) == blocked)
+                if let newCopy {
+                    #expect(newCopy.hasPrefix(w.kept.path))
+                    #expect(version(of: URL(fileURLWithPath: newCopy)) == "1.2.0", "the new copy is not where the error says")
+                    #expect(UpdateError.oldAppSaved(at: path, newCopy: newCopy).message.contains("App Management"))
+                }
             }
         default:
             let out = try await inst.run(rel, over: w.current)

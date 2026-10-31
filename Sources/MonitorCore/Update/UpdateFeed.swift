@@ -159,7 +159,10 @@ public enum UpdateError: Error, Equatable, Sendable {
     /// The swap failed and the current version is back in place.
     case swapFailed
     /// The swap failed and the old app could not go back; it was saved at this path instead.
-    case oldAppSaved(at: String)
+    /// `newCopy` is set when macOS refused for permission: the checked new version was kept there too.
+    case oldAppSaved(at: String, newCopy: String?)
+    /// As above, but saving to Downloads failed too, so the old app is still in a temp folder macOS may clear.
+    case oldAppOnlyInTemp(at: String)
 
     public var message: String {
         switch self {
@@ -173,8 +176,12 @@ public enum UpdateError: Error, Equatable, Sendable {
         case .wrongApp(let why): return "The download is not the expected MacMonitor (\(why)). Nothing was installed."
         case .signatureInvalid: return "The downloaded app failed its code signature check. Nothing was installed."
         case .swapFailed: return "Could not replace the app. The current version is still in place."
-        case .oldAppSaved(let path):
+        case .oldAppSaved(let path, nil):
             return "Could not replace the app or put the old one back. Your old MacMonitor is saved at \(path). Drag it into your Applications folder."
+        case .oldAppSaved(let path, let newCopy?):
+            return "macOS did not let MacMonitor replace itself or put the old one back. Your old MacMonitor is saved at \(path), and the checked new version is at \(newCopy). Allow MacMonitor under System Settings > Privacy & Security > App Management, or drag the new copy into Applications by hand."
+        case .oldAppOnlyInTemp(let path):
+            return "Could not replace the app or put the old one back. Your old MacMonitor is in a temporary folder at \(path). Copy it somewhere safe now, then drag it into your Applications folder."
         }
     }
 }

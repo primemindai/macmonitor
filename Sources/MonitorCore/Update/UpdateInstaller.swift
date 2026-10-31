@@ -123,9 +123,13 @@ public struct UpdateInstaller: Sendable {
         } catch let f as SwapFailure where !f.restored {
             // The only copy of the old app is in the temp folder. Save it where the user can find it, before cleanup.
             let oldVersion = (NSDictionary(contentsOf: backup.appendingPathComponent("Contents/Info.plist"))?["CFBundleShortVersionString"] as? String) ?? "old"
-            if let saved = try? keep(backup, version: oldVersion) { throw UpdateError.oldAppSaved(at: saved.path) }
-            removeWork = false
-            throw UpdateError.oldAppSaved(at: backup.path)
+            guard let saved = try? keep(backup, version: oldVersion) else {
+                removeWork = false
+                throw UpdateError.oldAppOnlyInTemp(at: backup.path)
+            }
+            // A permission refusal (App Management) also left the checked new copy in temp: keep it for the user to drag in.
+            let newCopy = Self.isPermissionError(f.cause) ? (try? keep(newApp, version: release.versionText))?.path : nil
+            throw UpdateError.oldAppSaved(at: saved.path, newCopy: newCopy)
         } catch let f as SwapFailure {
             // Old app is back in place. If macOS refused for permission, hand the user the checked new copy instead.
             guard Self.isPermissionError(f.cause) else { throw UpdateError.swapFailed }
