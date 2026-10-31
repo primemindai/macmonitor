@@ -74,6 +74,7 @@ enum MacMonitorMain {
         }
 
         model.start()
+        model.updates.start()
         notifier?.askOnceIfNeeded()
         if !model.prefs.loginItemConfigured, LoginItem.isInstalledCopy {
             model.loginItem = LoginItem.enable()

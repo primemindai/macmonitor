@@ -4,7 +4,7 @@ import MonitorCore
 
 /// Sidebar pages.
 enum Page: String, CaseIterable, Identifiable, Sendable {
-    case overview, chipMap, heat, cpu, gpu, memory, power, disks, network, apps, events, settings, connectAI
+    case overview, chipMap, heat, cpu, gpu, memory, power, disks, network, apps, events, settings, connectAI, updates
     var id: String { rawValue }
 
     var title: String {
@@ -22,6 +22,7 @@ enum Page: String, CaseIterable, Identifiable, Sendable {
         case .events: return "Events"
         case .settings: return "Settings"
         case .connectAI: return "Connect AI"
+        case .updates: return "Updates"
         }
     }
 
@@ -40,6 +41,7 @@ enum Page: String, CaseIterable, Identifiable, Sendable {
         case .events: return "bell.badge"
         case .settings: return "gearshape"
         case .connectAI: return "point.3.connected.trianglepath.dotted"
+        case .updates: return "arrow.down.circle"
         }
     }
 }
@@ -77,6 +79,8 @@ enum Page: String, CaseIterable, Identifiable, Sendable {
     private let writeQueue = DispatchQueue(label: "macmonitor.history", qos: .utility)
     private(set) var windowOpen = false
     var notifier: Notifier?
+    /// The update check and "Update now". Live only when this copy writes history (not in render mode).
+    let updates: UpdateModel
     private var cpuLogPath: String?
     private var lastCPULog = Date.distantPast
     private var lastTickCost: TickCost?
@@ -84,6 +88,7 @@ enum Page: String, CaseIterable, Identifiable, Sendable {
     /// `writesHistory` false (render mode) opens the history read only and never writes it.
     init(writesHistory: Bool, defaults: UserDefaults = .standard) {
         self.writesHistory = writesHistory
+        updates = UpdateModel(defaults: defaults, live: writesHistory)
         prefsStore = PrefsStore(defaults: defaults)
         let p = prefsStore.load()
         prefs = p

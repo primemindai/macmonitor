@@ -20,6 +20,11 @@ import MonitorCore
             model.start()
             // Real status for the Settings screenshot (no requests are made here).
             model.loginItem = LoginItem.status()
+            // `--fake-update <version>`: show the update badge and page as if GitHub had that release. No network.
+            let args = CommandLine.arguments
+            if let i = args.firstIndex(of: "--fake-update"), args.indices.contains(i + 1) {
+                model.updates.fakeAvailable(version: args[i + 1], notes: "Sample release notes for the screenshot.\n\n- Update badge in the sidebar\n- One-click Update now")
+            }
             let n = Notifier(model: model)
             n.refreshStatus()
             notifier = n

@@ -107,10 +107,14 @@ struct SettingsPage: View {
                 }
             }
 
+            RowGroup(title: "Updates", note: "From the MacMonitor releases on GitHub.") {
+                UpdateSettingsCard(updates: model.updates) { model.page = .updates }
+            }
+
             RowGroup(title: "About") {
                 Card {
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("MacMonitor reads hardware sensors read only. It never writes to the SMC, never needs a password, and never sends data anywhere. Claude can read the same data through the macmonitor-mcp tool inside the app.")
+                        Text("MacMonitor reads hardware sensors read only. It never writes to the SMC and never needs a password. It only connects to GitHub, about once a day, to check for a new version. It sends nothing about your Mac. You can turn this off under Updates. Claude can read the same data through the macmonitor-mcp tool inside the app.")
                             .font(.system(size: 12)).foregroundStyle(theme.mut).fixedSize(horizontal: false, vertical: true)
                     }
                 }

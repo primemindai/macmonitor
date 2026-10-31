@@ -37,6 +37,7 @@ struct PageHost: View {
             case .events: EventsPage()
             case .settings: SettingsPage()
             case .connectAI: ConnectAIPage()
+            case .updates: UpdatesPage()
             }
         }
         .id(page)
@@ -88,6 +89,7 @@ struct Sidebar: View {
             Caps("History").padding(.horizontal, 10).padding(.top, 12).padding(.bottom, 3)
             item(.events)
             Spacer(minLength: 8)
+            UpdatePill(updates: model.updates) { withAnimation(.snappy(duration: 0.28)) { model.page = .updates } }
             item(.connectAI)
             item(.settings)
                 .padding(.bottom, 10)
@@ -164,7 +166,7 @@ struct Sidebar: View {
             let day = Date().addingTimeInterval(-86_400)
             let n = model.recentEvents.filter { $0.ts > day }.count
             return Live(text: "\(n)", value: Double(n), color: nil)
-        case .settings, .connectAI:
+        case .settings, .connectAI, .updates:
             return nil
         }
     }
