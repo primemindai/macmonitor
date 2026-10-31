@@ -89,18 +89,19 @@ This builds a release copy, wraps it in `MacMonitor.app`, signs it ad hoc, insta
 `~/Applications/MacMonitor.app` and opens it. The first launch asks once for notification permission
 and turns on "start at login".
 
-Make a release zip and its checksum (what the Releases page ships; it does not install anything):
+Make a release zip, its checksum and its signature (what the Releases page ships; it does not install anything).
+It needs the project signing key (see "Release signing" below):
 
 ```bash
-scripts/release.sh 1.2.0
+scripts/release.sh 1.3.0
 ```
 
-It writes `.build/release-zip/MacMonitor-1.2.0.zip` and `MacMonitor-1.2.0.zip.sha256`. Upload both. The app's
-**Update now** refuses a release that has no `.sha256` file:
+It writes `.build/release-zip/MacMonitor-1.3.0.zip`, `MacMonitor-1.3.0.zip.sha256` and `MacMonitor-1.3.0.zip.sig`.
+Upload all three. The app's **Update now** refuses a release that has no `.sha256` or no `.sig` file:
 
 ```bash
-gh release create v1.2.0 .build/release-zip/MacMonitor-1.2.0.zip .build/release-zip/MacMonitor-1.2.0.zip.sha256 \
-  --title "MacMonitor 1.2.0" --notes "What changed"
+gh release create v1.3.0 .build/release-zip/MacMonitor-1.3.0.zip .build/release-zip/MacMonitor-1.3.0.zip.sha256 \
+  .build/release-zip/MacMonitor-1.3.0.zip.sig --title "MacMonitor 1.3.0" --notes "What changed"
 ```
 
 Run the tests. Use the script: plain `swift test` on Command Line Tools cannot find the Testing framework, so it fails or runs zero tests.
@@ -178,13 +179,17 @@ These need root (an admin password) or would change hardware, so MacMonitor does
   `MacMonitor/<version>` User-Agent. Nothing about your Mac is sent. Drafts and prereleases are skipped.
 - **Turn it off:** **Settings, Updates, Check for updates**. Off means no check at all. **Check now** still asks once
   when you click it.
-- **Update now** downloads `MacMonitor-<version>.zip` and its `.sha256` from GitHub over https. It installs only when the
-  SHA-256 matches, the app inside is MacMonitor with the right version, and its code signature checks out.
+- **Update now** downloads `MacMonitor-<version>.zip`, its `.sha256` and its `.sig` from GitHub over https. It installs
+  only when the SHA-256 matches, the `.sig` shows the zip was signed with the MacMonitor project key, the app inside is
+  MacMonitor with the right version, and its code signature checks out. A release with no `.sig` is refused.
   Then it swaps the app in place and opens the new copy. If the swap fails, the old app is put back
   (if even that fails, the old app is saved in Downloads and the message says where).
-- **What the checks prove:** they catch a cut-off or damaged download, a file swapped only on the download server,
-  the wrong app or version, and changes made after signing. They do not prove who made the release: anyone who can
-  publish a release on this GitHub repo could ship an update.
+- **What the checks prove:** the release was signed with the MacMonitor project key. So having access to the GitHub
+  repo alone is no longer enough to ship an update. They also catch a cut-off or damaged download, the wrong app or
+  version, and changes made after the app was code signed.
+- **What they do not cover:** if the project key itself is stolen, whoever has it can sign an update. And the one
+  update from 1.2.0 to 1.3.0 is checked by 1.2.0, which only checks the SHA-256, so that one step still rests on the
+  GitHub account alone. From 1.3.0 on, every update must carry the signature.
 - **If macOS blocks the swap:** macOS can stop one app from changing another (System Settings > Privacy & Security >
   App Management). Then MacMonitor keeps the checked new copy in Downloads. Allow MacMonitor there, or drag the new
   copy into Applications by hand.
@@ -192,6 +197,23 @@ These need root (an admin password) or would change hardware, so MacMonitor does
   zip or the Downloads folder), or the app's folder is not writable, it does not replace anything. It puts the
   checked new copy in your Downloads folder and shows it in Finder, so you can drag it into Applications.
 - **Download** opens the release page, if you prefer to install by hand.
+
+### Release signing (for maintainers)
+
+- **Where the key lives:** the private key is in the release maintainer's login Keychain (a generic password with
+  service `macmonitor-release-signing`). It is never in this repo. The public key is built into the app as
+  `ReleaseSignature.projectPublicKeyBase64` in `Sources/MonitorCore/Update/ReleaseSignature.swift`.
+- **Make it once:** `swift scripts/release-key.swift new` saves a new key in the Keychain and prints only the public
+  key. Put that into `projectPublicKeyBase64`. It refuses if a key already exists. `scripts/release.sh` refuses to run
+  while the constant is still the placeholder.
+- **Each release:** `scripts/release.sh <version>` signs the zip, then checks the `.sig` against the key in the app
+  source and stops if it does not match. Upload all three files: the `.zip`, the `.sha256` and the `.sig`.
+  On another Mac, set `MACMONITOR_SIGNING_KEY_FILE` to a key file instead of using the Keychain.
+- **If the key is lost:** no new release can be signed with it, so the app refuses every new update. Make a new key and
+  ship its public key in the next release. Users install that one release by hand with **Download**. After that,
+  updates work again.
+- **Changing the key:** make one release signed with the old key that ships the new public key. Releases after that
+  are signed with the new key.
 
 ## History
 
