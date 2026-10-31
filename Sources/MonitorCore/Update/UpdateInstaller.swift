@@ -89,9 +89,9 @@ public struct UpdateInstaller: Sendable {
     public func run(_ release: ReleaseInfo, over appURL: URL, step: @escaping @Sendable (Step) -> Void = { _ in }) async throws -> Outcome {
         guard let zipURL = release.zipURL else { throw UpdateError.noDownload }
         guard let sumURL = release.checksumURL else { throw UpdateError.checksumMissing }
-        /// Rollout rule: from 1.3.0 on, a release with no `.sig` is refused outright. A soft "skip if missing" would let
-        /// anyone who can publish a GitHub release just leave it off. 1.2.0 ignores the `.sig` and updates to the first
-        /// signed release (1.3.0) with the SHA-256 checks only; every release after that is signed by scripts/release.sh.
+        // Rollout rule: from 1.3.0 on, a release with no `.sig` is refused outright. A soft "skip if missing" would let
+        // anyone who can publish a GitHub release just leave it off. 1.2.0 ignores the `.sig` and updates to the first
+        // signed release (1.3.0) with the SHA-256 checks only; every release after that is signed by scripts/release.sh.
         guard let sigURL = release.signatureURL else { throw UpdateError.releaseSignatureMissing }
         guard UpdateFeed.isAllowedAssetURL(zipURL), UpdateFeed.isAllowedAssetURL(sumURL), UpdateFeed.isAllowedAssetURL(sigURL) else {
             throw UpdateError.unsafeURL

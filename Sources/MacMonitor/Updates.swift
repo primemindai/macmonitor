@@ -197,7 +197,7 @@ private struct UpdatesContent: View {
                     Text("You have the newest version (\(updates.currentVersion ?? "unknown")).").font(.system(size: 13))
                 }
             }
-            Text("Update now downloads the release from GitHub, with its checksum and signature files, and checks it before it replaces this copy. The checks prove the release was signed with the MacMonitor project key, so access to the GitHub repo alone is not enough to ship an update. They also catch a damaged download, the wrong app or version, and changes made after the app was code signed. They do not help if the project key itself is stolen. The one update from 1.2.0 to 1.3.0 was checked by 1.2.0 with the checksum only.")
+            Text("Update now downloads the release from GitHub, with its checksum and signature files, and checks it before it replaces this copy. The checks prove the release was signed with the MacMonitor project key, so access to the GitHub repo alone is not enough to ship an update. They also catch a damaged download, the wrong app or version, and changes made after the app was code signed. They do not help if the project key itself is stolen.")
                 .font(.system(size: 11)).foregroundStyle(theme.mut).fixedSize(horizontal: false, vertical: true)
         }
     }

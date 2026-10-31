@@ -377,8 +377,7 @@ func updateDefaults() -> UserDefaults {
         // A real project signature, but for some other file (say an older release).
         case "release signature for other bytes": files[zipURL + ".sig"] = try sign(Data("MacMonitor-1.1.0.zip".utf8), with: w.key)
         case "garbage release signature": files[zipURL + ".sig"] = Data("not a signature\n".utf8)
-        // The app's own key (today the placeholder) must refuse a zip signed with any other key, so a release
-        // built before the release key step can never install.
+        // The app's own key, the default the app always uses, must refuse a zip signed with any other key.
         case "built-in key": break
         case "tampered zip": var z = w.zip; z[z.count / 2] ^= 0xFF; files[zipURL] = z
         case "wrong bundle id", "wrong version", "broken signature":

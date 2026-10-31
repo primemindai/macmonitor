@@ -203,7 +203,7 @@ These need root (an admin password) or would change hardware, so MacMonitor does
 - **Where the key lives:** the private key is in the release maintainer's login Keychain (a generic password with
   service `macmonitor-release-signing`). It is never in this repo. The public key is built into the app as
   `ReleaseSignature.projectPublicKeyBase64` in `Sources/MonitorCore/Update/ReleaseSignature.swift`.
-- **Make it once:** `swift scripts/release-key.swift new` saves a new key in the Keychain and prints only the public
+- **Made once (2026-10-30):** `swift scripts/release-key.swift new` saves a new key in the Keychain and prints only the public
   key. Put that into `projectPublicKeyBase64`. It refuses if a key already exists. `scripts/release.sh` refuses to run
   while the constant is still the placeholder.
 - **Each release:** `scripts/release.sh <version>` signs the zip, then checks the `.sig` against the key in the app

@@ -6,10 +6,9 @@ import CryptoKit
 /// scripts/release-key.swift signs the exact zip bytes and writes `MacMonitor-<version>.zip.sig`:
 /// one line, base64 of the 64-byte raw signature. The app checks it with the public key below.
 public enum ReleaseSignature {
-    /// The project's public key: base64 of the raw 32-byte Ed25519 key.
-    // Set by the release key step. Until then this placeholder is not base64, so it never decodes
-    // and every signature check refuses. scripts/release.sh also refuses to ship while it is here.
-    public static let projectPublicKeyBase64 = "PLACEHOLDER-SET-BY-THE-RELEASE-KEY-STEP"
+    /// The project's public key: base64 of the raw 32-byte Ed25519 key. Its private half is in the release
+    /// maintainer's login Keychain (see README, Release signing). Changing it means a key rotation.
+    public static let projectPublicKeyBase64 = "at+WE7DpPRVUVAfllHM3YsXAWWVhs+EaHOhom2B/5ls="
 
     /// A raw 32-byte Ed25519 public key from base64, or nil (so the check refuses) for anything else.
     static func publicKey(base64: String) -> Curve25519.Signing.PublicKey? {
