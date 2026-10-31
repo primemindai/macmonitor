@@ -12,12 +12,8 @@ VERSION="${1:?usage: scripts/release.sh <version>}"
 ROOT="$(pwd)"
 
 # The public key built into the app. A release must verify with it, or the app will refuse to install it.
-PUBKEY=$(sed -n 's/.*projectPublicKeyBase64 = "\(.*\)".*/\1/p' Sources/MonitorCore/Update/ReleaseSignature.swift)
-case "$PUBKEY" in
-  ""|PLACEHOLDER*)
-    echo "error: ReleaseSignature.projectPublicKeyBase64 is not set. Do the release key step first (README, Release signing)." >&2
-    exit 1 ;;
-esac
+# Stops here (set -e) while the key is the placeholder or missing.
+PUBKEY=$(scripts/release-pubkey.sh)
 
 # Map the build folder to "." so no local path ends up inside the binaries.
 swift build -c release --arch arm64 \
