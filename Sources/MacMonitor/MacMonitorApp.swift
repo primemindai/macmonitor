@@ -49,13 +49,21 @@ enum MacMonitorMain {
         // One copy only: the running copy holds the instance lock (render mode never takes it).
         instanceLock = InstanceLock.acquire()
         if instanceLock == nil {
-            // Ask the running one to show its window, then quit.
-            if launchedByUser { DistributedNotificationCenter.default().postNotificationName(Self.showNotice, object: nil, userInfo: nil, deliverImmediately: true) }
+            // Ask the running one to show its window, then quit. Hand it our turn to come forward first:
+            // macOS only lets an app take the front when the app in front hands over.
+            if launchedByUser {
+                if let running = NSRunningApplication.runningApplications(withBundleIdentifier: Bundle.main.bundleIdentifier ?? "")
+                    .first(where: { $0 != NSRunningApplication.current }) {
+                    NSApp.yieldActivation(to: running)
+                }
+                DistributedNotificationCenter.default().postNotificationName(Self.showNotice, object: nil, userInfo: nil, deliverImmediately: true)
+            }
             NSApp.terminate(nil)
             return
         }
 
         model = AppModel(writesHistory: true)
+        NSApp.mainMenu = MainMenu.make(openSettings: #selector(openSettings(_:)), target: self)
         notifier = Notifier(model: model)
         model.notifier = notifier
 
@@ -159,16 +167,33 @@ enum MacMonitorMain {
         model.setWindowOpen(true)
         w.makeKeyAndOrderFront(nil)
         NSApp.activate()
+        // An app that just left the menu bar only state is often not let to the front in the same turn. Ask again on the next.
+        DispatchQueue.main.async { [weak self] in
+            guard let w = self?.window, w.isVisible, !NSApp.isActive else { return }
+            NSApp.activate()
+            w.makeKeyAndOrderFront(nil)
+        }
+    }
+
+    @objc private func openSettings(_ sender: Any?) {
+        model.page = .settings
+        showWindow()
     }
 
     func windowWillClose(_ notification: Notification) {
         model.setWindowOpen(false)
-        apply(WindowPolicy.activation(mainWindowVisible: false))
-        // Release the SwiftUI tree; it is rebuilt when the window opens again.
-        DispatchQueue.main.async { [weak self] in self?.window?.contentView = nil }
+        // The window is still on screen here. Leave the Dock on the next turn, once it is gone, so it does not blink out
+        // half closed. If it opened again before then (close, then open fast), keep the Dock icon and the SwiftUI tree.
+        DispatchQueue.main.async { [weak self] in
+            guard let self, let w = self.window, !w.isVisible else { return }
+            // Release the SwiftUI tree; it is rebuilt when the window opens again.
+            w.contentView = nil
+            self.apply(WindowPolicy.activation(mainWindowVisible: false))
+        }
     }
 
     private func apply(_ a: AppActivation) {
-        _ = NSApp.setActivationPolicy(a == .regular ? .regular : .accessory)
+        let policy: NSApplication.ActivationPolicy = a == .regular ? .regular : .accessory
+        if NSApp.activationPolicy() != policy { _ = NSApp.setActivationPolicy(policy) }
     }
 }

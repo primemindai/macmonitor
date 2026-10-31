@@ -27,6 +27,7 @@ You can turn this off in Settings.
 
 - **Menu bar:** a tiny CPU graph plus `CPU 42% · 71° · 2.3k` (CPU, hottest temperature, fan RPM).
   Click it for key numbers, the fan headline and an "Open MacMonitor" button.
+- **Dock icon:** shows in the Dock and Cmd+Tab while the window is open. Close the window and it is menu bar only again.
 - **Overview:** CPU, GPU, hottest temperature and fan tiles with moving graphs, power by chip part,
   system and wall power, thermal pressure, and the top apps by energy.
 - **Chip map:** a drawing of the M4 Pro chip. Each block glows blue (40°) to red (100°) with its live
