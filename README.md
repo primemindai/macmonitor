@@ -8,7 +8,9 @@ It answers one question first: **why is my fan on right now?**
 It lives in the menu bar, opens a window full of live graphs, keeps history, sends alerts,
 and lets AI agents like Claude and Codex read the same data through an MCP server.
 
-It reads hardware sensors read only. It never writes to the hardware, never needs an admin password, and sends nothing over the network.
+It reads hardware sensors read only. It never writes to the hardware and never needs an admin password.
+It only connects to GitHub, about once a day, to check for a new version. It sends nothing about your Mac.
+You can turn this off in Settings.
 
 ![Overview page](docs/screenshots/01-overview-dark.png)
 
@@ -32,7 +34,10 @@ It reads hardware sensors read only. It never writes to the hardware, never need
 - **Detail pages:** Heat & fans, CPU, GPU, Memory, Power & battery, Disks, Network, Apps.
   Click a row to open its history chart (15 minutes, 1 hour, 24 hours or 30 days).
 - **Events:** fan ramps, heat, throttle signs, memory, swap, disk, SSD, battery flag and wake.
-- **Settings:** alert switches and thresholds, start at login, sample rate, history size and a clear button.
+- **Settings:** alert switches and thresholds, start at login, sample rate, history size and a clear button,
+  and the update check switch.
+- **Updates:** when a new version is out, an "Update available" badge shows in the sidebar. Click it to read
+  the release notes and click **Update now**.
 - **Connect AI:** copy-paste setup for Claude Code, Codex and Claude Desktop, with this app's real MCP server path
   filled in, a "Test connection" button, and the list of read-only tools. It only copies; it never edits your
   Claude or Codex config files.
@@ -55,7 +60,8 @@ Sensor names we have not proven carry a **best guess** tag. A reading that is mi
      xattr -dr com.apple.quarantine /Applications/MacMonitor.app
      ```
 
-You only do this once. Prefer to check the code first? Build it yourself (next section).
+You only do this once. Later versions install from inside the app (see [Updates](#updates)).
+Prefer to check the code first? Build it yourself (next section).
 
 ## Build and install from source
 
@@ -83,10 +89,18 @@ This builds a release copy, wraps it in `MacMonitor.app`, signs it ad hoc, insta
 `~/Applications/MacMonitor.app` and opens it. The first launch asks once for notification permission
 and turns on "start at login".
 
-Make a release zip (what the Releases page ships; it does not install anything):
+Make a release zip and its checksum (what the Releases page ships; it does not install anything):
 
 ```bash
-scripts/release.sh 1.0.0
+scripts/release.sh 1.2.0
+```
+
+It writes `.build/release-zip/MacMonitor-1.2.0.zip` and `MacMonitor-1.2.0.zip.sha256`. Upload both. The app's
+**Update now** refuses a release that has no `.sha256` file:
+
+```bash
+gh release create v1.2.0 .build/release-zip/MacMonitor-1.2.0.zip .build/release-zip/MacMonitor-1.2.0.zip.sha256 \
+  --title "MacMonitor 1.2.0" --notes "What changed"
 ```
 
 Run the tests. Use the script: plain `swift test` on Command Line Tools cannot find the Testing framework, so it fails or runs zero tests.
@@ -152,9 +166,25 @@ These need root (an admin password) or would change hardware, so MacMonitor does
 ## Privacy
 
 - No serial numbers are shown in the app or returned by the MCP server.
-- No network use. MacMonitor sends nothing anywhere.
+- MacMonitor only connects to GitHub, about once a day, to check for a new version. It sends nothing about your Mac.
+  You can turn this off in **Settings, Updates**.
 - It never asks for or stores a password.
 - The Wi-Fi network name is not shown (macOS needs Location access for it, and we do not ask).
+
+## Updates
+
+- **The check:** at launch, and then about once a day, MacMonitor asks GitHub for the latest release
+  (`api.github.com/repos/primemindai/macmonitor/releases/latest`). It is a plain request with a
+  `MacMonitor/<version>` User-Agent. Nothing about your Mac is sent. Drafts and prereleases are skipped.
+- **Turn it off:** **Settings, Updates, Check for updates**. Off means no check at all. **Check now** still asks once
+  when you click it.
+- **Update now** downloads `MacMonitor-<version>.zip` and its `.sha256` from GitHub over https. It installs only when the
+  SHA-256 matches, the app inside is MacMonitor with the right version, and its code signature checks out.
+  Then it swaps the app in place and opens the new copy. If the swap fails, the old app is put back.
+- **When it cannot install in place:** if macOS runs MacMonitor from a temporary copy (it was opened straight from the
+  zip or the Downloads folder), or the app's folder is not writable, it does not replace anything. It puts the
+  checked new copy in your Downloads folder and shows it in Finder, so you can drag it into Applications.
+- **Download** opens the release page, if you prefer to install by hand.
 
 ## History
 

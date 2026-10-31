@@ -10,7 +10,7 @@ struct NetworkPage: View {
         let s = model.latest
         let rx = s.map { $0.network.compactMap(\.rxBps).reduce(0, +) }
         let tx = s.map { $0.network.compactMap(\.txBps).reduce(0, +) }
-        PageScroll(title: "Network", subtitle: "Every real interface, from 64-bit counters. MacMonitor itself sends nothing over the network.") {
+        PageScroll(title: "Network", subtitle: "Every real interface, from 64-bit counters. MacMonitor itself only connects to GitHub, about once a day, to check for a new version. It sends nothing about your Mac.") {
             HStack(spacing: 12) {
                 StatTile(title: "Download", text: Fmt.rate(rx), value: rx ?? 0,
                          values: model.series(120) { $0.network.compactMap(\.rxBps).reduce(0, +) }, range: nil, color: Theme.net, tick: model.tick)
