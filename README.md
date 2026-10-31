@@ -1,18 +1,37 @@
 # MacMonitor
 
-**MCP for your Mac hardware.** Works with Claude and Codex.
+A free, open-source menu bar app for Apple Silicon Macs. It tells you, in one sentence, why your Mac's fan is on.
 
-MacMonitor is a free, open-source Mac app that shows what your Mac's hardware is doing, live.
-It answers one question first: **why is my fan on right now?**
+Here is the one in the screenshot below:
 
-It lives in the menu bar, opens a window full of live graphs, keeps history, sends alerts,
-and lets AI agents like Claude and Codex read the same data through an MCP server.
+> Fan at 2,485 RPM, steady. P cores used 7.1 W over the last minute (51% of chip power). Top: claude 2.2 W, Python 1.5 W.
 
-It reads hardware sensors read only. It never writes to the hardware and never needs an admin password.
-It only connects to GitHub, about once a day, to check for a new version. It sends nothing about your Mac.
-You can turn this off in Settings.
+**Download:** [the latest release](https://github.com/primemindai/macmonitor/releases/latest)
+(Apple Silicon, macOS 15 or newer). Or [build it from source](#build-and-install-from-source).
+
+<img src="docs/screenshots/13-menubar-popover-dark.png" alt="Menu bar popover with the fan sentence" width="380">
+
+It lives in the menu bar. Click it for key numbers and the fan sentence. Open the window for live graphs,
+history, alerts and a page for each part of the Mac.
 
 ![Overview page](docs/screenshots/01-overview-dark.png)
+
+## How it's different
+
+- **Read only.** It reads the SMC (the chip that runs the fans and heat sensors) and never writes to it.
+  There is no fan control.
+- **No sudo and no privileged helper.** The app itself never asks for an admin password. (If you use **Open Anyway**
+  the first time, macOS may ask for your password once, because the app is not Developer ID signed. See Download.)
+- **No powermetrics.** Power per chip part comes from IOReport, which a normal user can read.
+- **No third-party code.** It builds with only Apple's Command Line Tools. No Xcode, no packages.
+- **MCP for your Mac hardware.** Works with Claude and Codex. It is optional: Claude, Codex or any MCP client
+  can read the same numbers through a read-only server. If you do not use AI tools, skip it. See
+  [MCP](#claude-and-codex-can-read-it-too-mcp).
+- **Honest labels.** Sensor labels we have not proven are tagged "best guess". A missing reading shows
+  "not available" or `--`, never a fake zero.
+
+It only connects to GitHub, about once a day, to check for a new version. It sends nothing about your Mac.
+You can turn this off in Settings.
 
 ## Which Macs it works on
 
@@ -45,6 +64,11 @@ You can turn this off in Settings.
 
 Sensor names we have not proven carry a **best guess** tag. A reading that is missing shows
 "not available" or `--`, never a fake zero.
+
+More screenshots, each in dark and light, are in [docs/screenshots](docs/screenshots):
+[Chip map](docs/screenshots/02-chipMap-dark.png), [Heat & fans](docs/screenshots/03-heat-dark.png),
+[Power & battery](docs/screenshots/07-power-dark.png), [Connect AI](docs/screenshots/15-connectAI-dark.png)
+and [Updates](docs/screenshots/16-updates-dark.png).
 
 ## Download
 
@@ -90,18 +114,20 @@ This builds a release copy, wraps it in `MacMonitor.app`, signs it ad hoc, insta
 `~/Applications/MacMonitor.app` and opens it. The first launch asks once for notification permission
 and turns on "start at login".
 
-Make a release zip and its checksum (what the Releases page ships; it does not install anything):
+Make a release zip and its checksum (what the Releases page ships; it does not install anything).
+Set `VERSION` to the new version, the same one as in `Resources/Info.plist`:
 
 ```bash
-scripts/release.sh 1.2.0
+VERSION=1.3.2
+scripts/release.sh "$VERSION"
 ```
 
-It writes `.build/release-zip/MacMonitor-1.2.0.zip` and `MacMonitor-1.2.0.zip.sha256`. Upload both. The app's
+It writes `.build/release-zip/MacMonitor-$VERSION.zip` and `MacMonitor-$VERSION.zip.sha256`. Upload both. The app's
 **Update now** refuses a release that has no `.sha256` file:
 
 ```bash
-gh release create v1.2.0 .build/release-zip/MacMonitor-1.2.0.zip .build/release-zip/MacMonitor-1.2.0.zip.sha256 \
-  --title "MacMonitor 1.2.0" --notes "What changed"
+gh release create "v$VERSION" ".build/release-zip/MacMonitor-$VERSION.zip" ".build/release-zip/MacMonitor-$VERSION.zip.sha256" \
+  --title "MacMonitor $VERSION" --notes "What changed"
 ```
 
 Run the tests. Use the script: plain `swift test` on Command Line Tools cannot find the Testing framework, so it fails or runs zero tests.
@@ -240,7 +266,10 @@ so the app draws one frame a second and the system animates the rest.
 ```
 
 This samples live for `--wait` seconds, then renders every page in dark and light to PNG.
-It reads history but never writes it.
+It reads history but never writes it, and it does not touch a copy of the app that is already running.
+Add `--fake-update <version>` to show the update badge and the Updates page as if GitHub had that release
+(no network). The Connect AI page shows the path of the copy you run, so run it from a neutral place
+such as `/Applications` or `/tmp` before you publish the images.
 
 ## How it works
 
